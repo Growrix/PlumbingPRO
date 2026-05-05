@@ -10,18 +10,13 @@ interface SectionProps {
 }
 
 const backgroundClasses: Record<SectionBackground, string> = {
-  white: "bg-white",
-  light: "bg-neutral-50",
-  dark: "bg-neutral-900 text-white",
-  brand: "bg-brand-900 text-white",
+  white: "bg-white dark:bg-neutral-950",
+  light: "bg-neutral-50 dark:bg-neutral-900",
+  dark: "bg-neutral-900 dark:bg-neutral-950 text-white",
+  brand: "bg-brand-900 dark:bg-brand-950 text-white",
 };
 
-export function Section({
-  children,
-  className,
-  background = "white",
-  id,
-}: SectionProps) {
+export function Section({ children, className, background = "white", id }: SectionProps) {
   return (
     <section
       id={id}

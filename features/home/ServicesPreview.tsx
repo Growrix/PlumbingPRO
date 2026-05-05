@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { services } from "@/data/services";
-import { getPricingColor, getPricingLabel } from "@/lib/utils";
+import { getPricingLabel } from "@/lib/utils";
 import { ServiceIcon } from "@/features/services/ServiceIcon";
 
 const sectionMeta = {
@@ -40,7 +40,7 @@ export function ServicesPreview() {
             <Link href={`/services/${service.slug}`} className="block h-full group">
               <Card hover padding="lg" className="h-full flex flex-col">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600 group-hover:bg-brand-600 group-hover:text-white transition-colors duration-300">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 group-hover:bg-brand-600 dark:group-hover:bg-brand-600 group-hover:text-white transition-colors duration-300">
                     <ServiceIcon name={service.icon} className="h-6 w-6" />
                   </div>
                   <Badge variant={service.pricingTier === "premium" ? "warning" : service.pricingTier === "standard" ? "info" : "success"}>
@@ -48,16 +48,16 @@ export function ServicesPreview() {
                   </Badge>
                 </div>
 
-                <h3 className="text-lg font-bold text-neutral-900 mb-2 group-hover:text-brand-600 transition-colors">
+                <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                   {service.title}
                 </h3>
-                <p className="text-sm text-neutral-500 leading-relaxed flex-1">
+                <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed flex-1">
                   {service.shortDescription}
                 </p>
 
-                <div className="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-neutral-700">{service.priceRange}</span>
-                  <span className="text-sm text-brand-600 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                <div className="mt-5 pt-4 border-t border-neutral-100 dark:border-neutral-700 flex items-center justify-between">
+                  <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">{service.priceRange}</span>
+                  <span className="text-sm text-brand-600 dark:text-brand-400 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                     Learn more
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -71,7 +71,7 @@ export function ServicesPreview() {
       </div>
 
       <div className="mt-12 text-center">
-        <Button size="lg" variant="outline" className="border-brand-600 text-brand-600 hover:bg-brand-50">
+        <Button size="lg" variant="outline" className="border-brand-600 text-brand-600 hover:bg-brand-50 dark:border-brand-400 dark:text-brand-400 dark:hover:bg-brand-950">
           <Link href="/services">View All Services</Link>
         </Button>
       </div>

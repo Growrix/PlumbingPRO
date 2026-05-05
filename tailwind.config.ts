@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -52,11 +53,29 @@ const config: Config = {
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-in-out",
+        "float-slow": "floatSlow 6s ease-in-out infinite",
+        "float-med": "floatMed 4.5s ease-in-out infinite",
+        "float-fast": "floatFast 3.5s ease-in-out infinite",
+        "spin-slow": "spin 12s linear infinite",
+        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0", transform: "translateY(10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        floatSlow: {
+          "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+          "50%": { transform: "translateY(-20px) rotate(5deg)" },
+        },
+        floatMed: {
+          "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+          "33%": { transform: "translateY(-14px) rotate(-6deg)" },
+          "66%": { transform: "translateY(-7px) rotate(4deg)" },
+        },
+        floatFast: {
+          "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+          "50%": { transform: "translateY(-10px) rotate(-8deg)" },
         },
       },
     },
