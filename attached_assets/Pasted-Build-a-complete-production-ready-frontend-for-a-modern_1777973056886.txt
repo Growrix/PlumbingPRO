@@ -1,0 +1,242 @@
+Build a complete, production-ready frontend for a modern plumbing service platform using **Next.js (latest stable, App Router), React, TypeScript, and a scalable architecture**.
+
+This is NOT a simple static website. It must be a **modular, dynamic, and extensible frontend system**. Avoid all forms of hardcoded UI content directly inside components. All content (services, testimonials, navigation, etc.) must come from structured data sources (JSON, config files, or mock API layers) so it can be easily replaced later with a real backend or CMS.
+
+---
+
+### 🎯 PROJECT GOAL
+
+Create a high-conversion plumbing company website that acts as:
+
+* A **lead generation system**
+* A **trust-building platform**
+* A **fast booking interface**
+
+The UX must prioritize:
+
+* Clarity
+* Speed
+* Trust
+* Mobile-first experience
+* Strong call-to-actions
+
+---
+
+### 🧱 TECH STACK REQUIREMENTS
+
+* Next.js (latest, App Router)
+* React + TypeScript
+* Tailwind CSS (for scalable styling system)
+* Framer Motion (for animations)
+* No external UI kits (build reusable components)
+* Clean folder structure (feature-based or domain-based)
+
+---
+
+### 🚫 STRICT RULES
+
+* ❌ No hardcoded UI text inside components
+
+* ❌ No monolithic pages
+
+* ❌ No inline styles except rare cases
+
+* ❌ No tightly coupled logic
+
+* ✅ All content must be driven from:
+
+  * `/data` or `/content` directory
+  * OR a mock API layer
+
+* ✅ Components must be reusable and composable
+
+* ✅ Follow separation of concerns
+
+---
+
+### 🧩 REQUIRED FEATURES
+
+#### 1. GLOBAL STRUCTURE
+
+* Root layout with:
+
+  * Navbar
+  * Footer
+  * Global styles
+* Responsive design system
+* Container + spacing system
+
+---
+
+#### 2. HOME PAGE (Conversion-focused)
+
+Sections (modular components):
+
+* Hero section (headline, subtext, CTA)
+* Services preview (top services)
+* Trust indicators (badges, guarantees)
+* Testimonials
+* Call-to-action banner
+* Emergency contact highlight
+
+All sections must be built as reusable components.
+
+---
+
+#### 3. SERVICES SYSTEM
+
+* Data-driven services (from `/data/services.ts`)
+
+* Each service has:
+
+  * id
+  * title
+  * description
+  * features
+  * pricing tier (basic, standard, premium)
+
+* Pages:
+
+  * `/services` (list)
+  * `/services/[slug]` (dynamic detail page)
+
+---
+
+#### 4. TESTIMONIAL SYSTEM
+
+* Data-driven testimonials
+* Reusable testimonial card component
+* Carousel or animated list using Framer Motion
+
+---
+
+#### 5. CONTACT / BOOKING
+
+* Contact form (controlled inputs, validation-ready)
+
+* Fields:
+
+  * Name
+  * Phone
+  * Service type
+  * Message
+
+* UI only (no backend needed)
+
+* Must be easily connectable to API later
+
+---
+
+#### 6. DESIGN SYSTEM
+
+* Use Tailwind with:
+
+  * consistent spacing
+  * typography scale
+  * color palette (professional: blue, white, dark tones)
+
+* Create reusable components:
+
+  * Button
+  * Card
+  * Section wrapper
+  * Heading system
+
+---
+
+#### 7. ANIMATIONS
+
+Use Framer Motion for:
+
+* Hero entrance
+* Section reveals (scroll-based)
+* Hover interactions
+* Smooth transitions
+
+Keep animations subtle and professional.
+
+---
+
+#### 8. STATE & DATA HANDLING
+
+* Use local data layer (`/data`)
+* Optionally create a mock API abstraction
+* Avoid hardcoded arrays inside components
+
+---
+
+#### 9. FILE STRUCTURE (IMPORTANT)
+
+Follow a clean scalable structure:
+
+* /app (App Router pages)
+* /components (UI + sections)
+* /features (services, testimonials, etc.)
+* /data (static structured content)
+* /lib (helpers)
+* /types (TypeScript types)
+
+---
+
+#### 10. PERFORMANCE & UX
+
+* Mobile-first
+* Fast loading
+* Clean navigation
+* Sticky CTA (call/book button)
+
+---
+
+### 🎨 DESIGN DIRECTION
+
+The site should feel:
+
+* Modern
+* Trustworthy
+* Premium
+* Clean (not cluttered)
+
+NOT:
+
+* Cartoonish
+* Template-like
+* Overdesigned
+
+---
+
+### 🧠 DEVELOPMENT APPROACH
+
+Build this like a real product, not a demo:
+
+* Think in systems, not pages
+* Think reusable components
+* Think future API integration
+* Keep everything extendable
+
+---
+
+### 📦 FINAL OUTPUT
+
+* Fully working Next.js frontend
+
+* Runs with:
+  npm install
+  npm run dev
+
+* Clean, readable code
+
+* No placeholder junk text
+
+* Everything structured and scalable
+
+---
+
+### ⚠️ IMPORTANT MINDSET
+
+Do NOT take shortcuts.
+
+If something looks like it’s easier to hardcode — do NOT do it.
+
+This project must be:
+
+> scalable, maintainable, and production-ready frontend architecture
