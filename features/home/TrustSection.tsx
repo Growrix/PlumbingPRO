@@ -17,7 +17,6 @@ export function TrustSection() {
   return (
     <Section background="white">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
-        {/* Left: Text */}
         <div>
           <SectionHeading
             eyebrow={sectionMeta.eyebrow}
@@ -32,21 +31,20 @@ export function TrustSection() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="flex gap-3 p-4 rounded-xl hover:bg-neutral-50 transition-colors"
+                className="flex gap-3 p-4 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800/60 transition-colors"
               >
-                <div className="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
+                <div className="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 dark:bg-brand-950 text-brand-600 dark:text-brand-400">
                   <TrustIcon name={badge.icon} className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-neutral-900 mb-1">{badge.title}</h4>
-                  <p className="text-xs text-neutral-500 leading-relaxed">{badge.description}</p>
+                  <h4 className="text-sm font-bold text-neutral-900 dark:text-white mb-1">{badge.title}</h4>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">{badge.description}</p>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Right: Visual */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -55,7 +53,6 @@ export function TrustSection() {
           className="relative"
         >
           <div className="rounded-3xl bg-gradient-to-br from-brand-900 to-brand-700 p-8 text-white overflow-hidden relative">
-            {/* Background decoration */}
             <div className="absolute top-0 right-0 h-48 w-48 rounded-full bg-brand-600/40 translate-x-16 -translate-y-16" />
             <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-accent-500/20 -translate-x-8 translate-y-8" />
 
@@ -95,7 +92,7 @@ export function TrustSection() {
               ))}
 
               <div className="pt-4 border-t border-white/10 text-sm text-brand-300">
-                <p>License #{" "}<span className="text-white font-medium">TX-PLB-2024-88341</span></p>
+                <p>License <span className="text-white font-medium">TX-PLB-2024-88341</span></p>
                 <p className="mt-1">Fully insured · Background checked · Drug tested</p>
               </div>
             </div>

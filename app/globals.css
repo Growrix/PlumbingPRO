@@ -16,12 +16,20 @@
   }
 
   body {
-    @apply font-sans text-neutral-900 bg-white;
+    @apply font-sans text-neutral-900 bg-white transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply text-neutral-100 bg-neutral-950;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
   }
+
+  /* Dark mode surface overrides */
+  .dark .bg-white { background-color: rgb(15 23 42); }
+  .dark .bg-neutral-50 { background-color: rgb(30 41 59); }
 }
 
 @layer components {
@@ -35,5 +43,17 @@
 
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+  }
+
+  /* Dark mode card */
+  .dark-card {
+    @apply bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/60;
+  }
+
+  /* Theme transition */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
   }
 }

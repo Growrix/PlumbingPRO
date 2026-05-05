@@ -7,7 +7,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-neutral-900 text-neutral-300">
+    <footer className="bg-neutral-900 dark:bg-neutral-950 text-neutral-300">
       <div className="container-wide py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand Column */}
@@ -54,9 +54,7 @@ export function Footer() {
 
           {/* Services Column */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-neutral-400 mb-4">
-              Services
-            </h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-neutral-400 mb-4">Services</h3>
             <ul className="space-y-2.5 text-sm">
               {[
                 { label: "Emergency Repairs", href: "/services/emergency-repairs" },
@@ -77,9 +75,7 @@ export function Footer() {
 
           {/* Company Column */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-neutral-400 mb-4">
-              Company
-            </h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-neutral-400 mb-4">Company</h3>
             <ul className="space-y-2.5 text-sm mb-6">
               {navItems.map((item) => (
                 <li key={item.href}>
@@ -89,7 +85,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <div className="rounded-xl bg-neutral-800 p-4">
+            <div className="rounded-xl bg-neutral-800 dark:bg-neutral-900 p-4">
               <p className="text-xs font-semibold text-neutral-400 mb-1">License</p>
               <p className="text-xs text-neutral-300">{siteConfig.licenseNumber}</p>
             </div>
@@ -97,7 +93,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-neutral-800">
+      <div className="border-t border-neutral-800 dark:border-neutral-800">
         <div className="container-wide py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
           <p>&copy; {currentYear} {siteConfig.companyName}. All rights reserved.</p>
           <div className="flex gap-4">
