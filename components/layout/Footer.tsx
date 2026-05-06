@@ -95,7 +95,20 @@ export function Footer() {
 
       <div className="border-t border-neutral-800 dark:border-neutral-800">
         <div className="container-wide py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
-          <p>&copy; {currentYear} {siteConfig.companyName}. All rights reserved.</p>
+          <div className="flex flex-col items-center sm:items-start gap-1 text-center sm:text-left">
+            <p>&copy; {currentYear} {siteConfig.companyName}. All rights reserved.</p>
+            <p>
+              Built &amp; Maintenece by{" "}
+              <a
+                href="https://www.growrixos.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neutral-300 hover:text-white transition-colors"
+              >
+                Growrix OS
+              </a>
+            </p>
+          </div>
           <div className="flex gap-4">
             <Link href="#" className="hover:text-neutral-300 transition-colors">Privacy Policy</Link>
             <Link href="#" className="hover:text-neutral-300 transition-colors">Terms of Service</Link>
