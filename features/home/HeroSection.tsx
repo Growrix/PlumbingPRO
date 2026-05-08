@@ -34,9 +34,20 @@ const fadeUp = {
   }),
 };
 
+const heroBackgroundImage =
+  "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1600&q=80";
+
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 dark:from-neutral-950 dark:via-brand-950 dark:to-neutral-900">
+    <section className="relative min-h-screen flex items-center overflow-hidden" style={{
+      backgroundImage: `url("${heroBackgroundImage}")`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+    }}>
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/95 via-neutral-950/85 to-neutral-950/70 dark:from-neutral-950/98 dark:via-neutral-950/92 dark:to-neutral-950/80" aria-hidden="true" />
+
       {/* Grid background */}
       <div className="absolute inset-0 opacity-[0.07]" aria-hidden="true">
         <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">

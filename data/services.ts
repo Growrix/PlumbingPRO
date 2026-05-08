@@ -10,6 +10,7 @@ export const services: Service[] = [
     description:
       "When plumbing emergencies strike, every minute counts. Our certified technicians are on call around the clock — 365 days a year — to respond to burst pipes, major leaks, sewer backups, and any urgent failure that threatens your home or business. We arrive fast, diagnose precisely, and fix it right the first time.",
     icon: "zap",
+    image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&h=600&q=80",
     features: [
       "24/7 availability including holidays",
       "60-minute average response time",
@@ -32,6 +33,7 @@ export const services: Service[] = [
     description:
       "Slow drains and blockages are more than an inconvenience — they can signal deeper issues in your plumbing system. We use professional-grade hydro-jetting equipment and advanced camera inspection to clear kitchen, bathroom, and main line drains completely, not just partially.",
     icon: "droplets",
+    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=900&h=600&q=80",
     features: [
       "Hydro-jet and snake methods",
       "Camera inspection available",
@@ -54,6 +56,7 @@ export const services: Service[] = [
     description:
       "From traditional tank units to modern tankless systems, we handle every aspect of water heater service. Whether your unit is leaking, not heating, or simply aging out, our experts will give you an honest assessment and efficient solution — with energy-efficient upgrades available.",
     icon: "flame",
+    image: "https://images.unsplash.com/photo-1542013936693-884638332954?auto=format&fit=crop&w=900&h=600&q=80",
     features: [
       "Tank and tankless installation",
       "All major brands serviced",
@@ -76,6 +79,7 @@ export const services: Service[] = [
     description:
       "Damaged, corroded, or burst pipes can cause extensive property damage if not addressed quickly. We offer trenchless pipe lining and traditional pipe replacement using high-quality materials. Our diagnostic tools locate the problem without unnecessary excavation, saving you time and money.",
     icon: "wrench",
+    image: "https://images.unsplash.com/photo-1536895058696-a69b1c7ba34f?auto=format&fit=crop&w=900&h=600&q=80",
     features: [
       "Trenchless pipe lining",
       "Copper, PVC, and PEX repairs",
@@ -98,6 +102,7 @@ export const services: Service[] = [
     description:
       "Upgrade your bathroom or fix persistent issues with professional fixture installation and repair. We work with all fixture brands and styles, ensuring proper installation, watertight connections, and code-compliant work. From a dripping faucet to a full bathroom renovation, we handle it all.",
     icon: "bath",
+    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&h=600&q=80",
     features: [
       "Toilet installation and repair",
       "Faucet and sink services",
@@ -120,6 +125,7 @@ export const services: Service[] = [
     description:
       "Hidden leaks can waste thousands of gallons of water and cause serious structural damage before they become visible. Our non-invasive leak detection technology — including acoustic sensors and thermal imaging — pinpoints leaks behind walls, under slabs, and underground with pinpoint accuracy.",
     icon: "search",
+    image: "https://images.unsplash.com/photo-1521207418485-99c705420785?auto=format&fit=crop&w=900&h=600&q=80",
     features: [
       "Acoustic leak detection",
       "Thermal imaging technology",
