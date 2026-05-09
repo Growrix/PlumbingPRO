@@ -5,6 +5,7 @@ export interface Service {
   shortDescription: string;
   description: string;
   icon: string;
+  image?: string;
   features: string[];
   pricingTier: "basic" | "standard" | "premium";
   priceRange: string;
