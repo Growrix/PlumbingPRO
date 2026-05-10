@@ -1,0 +1,158 @@
+template: ai_saas
+description: >
+  Template for SaaS apps where AI/LLM features are the core product surface.
+  Includes chat completions, streaming, per-user token budgets, cost tracking,
+  background AI job processing, and semantic search alongside standard SaaS pillars.
+
+best_for:
+  - ai_writing_assistants
+  - ai_chat_products
+  - llm_powered_dashboards
+  - document_intelligence_tools
+  - ai_first_vertical_saas
+
+frontend:
+  framework: nextjs
+  router: app_router
+  language: typescript
+  styling: tailwindcss
+  ui_kit: shadcn_ui
+  state_management: react_server_components_plus_zustand_for_client_state
+  data_fetching: server_components_plus_vercel_ai_sdk_for_streaming
+  forms: react_hook_form_plus_zod
+  required_routes:
+    - /
+    - /pricing
+    - /sign-in
+    - /sign-up
+    - /dashboard
+    - /dashboard/chat
+    - /dashboard/chat/[id]
+    - /dashboard/billing
+    - /dashboard/settings
+    - /api/chat
+    - /api/chat/[id]/stream
+    - /api/webhooks/stripe
+    - /api/webhooks/clerk
+    - /api/inngest
+    - /api/health
+
+backend:
+  runtime: nextjs_route_handlers
+  service_layer: src/server/services
+  repository_layer: src/server/repositories
+  validation: zod
+  background_jobs: inngest
+  streaming: vercel_ai_sdk_streamingTextResponse
+
+integrations:
+  ai: openai
+  auth: clerk
+  payments: stripe
+  emails: resend
+  analytics: posthog
+  database: postgres
+  background_jobs: inngest
+  cache_and_rate_limit: upstash
+  error_tracking: sentry
+  logging: axiom
+  search: meilisearch
+
+deployment:
+  platform: vercel
+  database_host: managed_postgres
+  studio_host: not_applicable
+  env_management: vercel_environments
+  ci_cd: vercel_git_integration_plus_github_actions_for_db_migrations
+
+required_env_vars:
+  - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+  - CLERK_SECRET_KEY
+  - CLERK_WEBHOOK_SIGNING_SECRET
+  - STRIPE_SECRET_KEY
+  - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  - STRIPE_WEBHOOK_SECRET
+  - RESEND_API_KEY
+  - RESEND_FROM_ADDRESS
+  - NEXT_PUBLIC_POSTHOG_KEY
+  - NEXT_PUBLIC_POSTHOG_HOST
+  - DATABASE_URL
+  - DIRECT_URL
+  - OPENAI_API_KEY
+  - OPENAI_ORG_ID
+  - INNGEST_EVENT_KEY
+  - INNGEST_SIGNING_KEY
+  - UPSTASH_REDIS_REST_URL
+  - UPSTASH_REDIS_REST_TOKEN
+  - NEXT_PUBLIC_SENTRY_DSN
+  - SENTRY_DSN
+  - SENTRY_ORG
+  - SENTRY_PROJECT
+  - SENTRY_AUTH_TOKEN
+  - AXIOM_TOKEN
+  - AXIOM_DATASET
+  - MEILISEARCH_HOST
+  - MEILISEARCH_API_KEY
+
+required_db_tables:
+  - users
+  - subscriptions
+  - conversations
+  - messages
+  - ai_usage
+  - email_logs
+
+required_components:
+  frontend:
+    - chat_ui_with_streaming
+    - message_list_with_markdown_renderer
+    - usage_meter_component
+    - conversation_sidebar
+  backend:
+    - openai_client_singleton
+    - streaming_chat_route_handler
+    - inngest_client_singleton
+    - ai_usage_tracking_service
+    - rate_limit_helpers_per_user
+    - conversation_service
+    - message_service
+  background_jobs:
+    - long_running_ai_completion_function
+    - usage_aggregation_cron
+    - email_dispatch_function
+
+folder_structure:
+  - src/app/(marketing)/page.tsx
+  - src/app/(marketing)/pricing/page.tsx
+  - src/app/(dashboard)/dashboard/page.tsx
+  - src/app/(dashboard)/dashboard/chat/page.tsx
+  - src/app/(dashboard)/dashboard/chat/[id]/page.tsx
+  - src/app/api/chat/route.ts
+  - src/app/api/chat/[id]/stream/route.ts
+  - src/app/api/inngest/route.ts
+  - src/app/api/webhooks/stripe/route.ts
+  - src/app/api/webhooks/clerk/route.ts
+  - src/app/api/health/route.ts
+  - src/server/services/ai.ts
+  - src/server/services/conversations.ts
+  - src/server/services/messages.ts
+  - src/server/services/usage.ts
+  - src/lib/openai.ts
+  - src/lib/upstash.ts
+  - src/inngest/client.ts
+  - src/inngest/functions/ai-completion.ts
+  - src/inngest/functions/usage-aggregation.ts
+
+slo_targets:
+  web_vitals_lcp_ms: 2500
+  api_p99_ms: 500
+  ai_stream_first_token_ms: 2000
+  db_query_p99_ms: 100
+  uptime_percent: 99.9
+
+constraints:
+  - openai_api_key_server_side_only
+  - per_user_rate_limit_mandatory_on_all_ai_routes
+  - streaming_routes_must_use_edge_or_nodejs_not_both
+  - ai_usage_table_must_log_every_completion
+  - long_completions_must_use_inngest_not_block_request_thread

@@ -1,0 +1,124 @@
+integration: stripe
+category: payments
+role: payments
+tier: standard
+default_for_archetypes:
+  - saas_app
+  - ecommerce
+  - marketplace
+  - marketing_site
+alternatives:
+  - paddle
+  - lemonsqueezy
+cost_band: mid
+compliance_tags:
+  - gdpr-ready
+  - pci-scope-reduction
+  - soc2-friendly
+boundary: app
+
+package_name: stripe
+client_packages:
+  - "@stripe/stripe-js"
+  - "@stripe/react-stripe-js"
+server_packages:
+  - stripe
+
+use_cases:
+  - one_time_payments
+  - subscriptions
+  - metered_billing
+  - customer_portal
+  - invoices
+  - tax_collection
+  - checkout_sessions
+  - payment_intents
+  - webhooks_for_billing_events
+
+required_components:
+  frontend:
+    - checkout_button
+    - pricing_table
+    - billing_portal_link
+    - success_page
+    - cancel_page
+  backend:
+    - api_route_create_checkout_session
+    - api_route_create_portal_session
+    - api_route_webhook_handler
+    - service_stripe_client
+  database:
+    - table_or_collection: customers
+      fields: [id, user_id, stripe_customer_id, created_at]
+    - table_or_collection: subscriptions
+      fields: [id, user_id, stripe_subscription_id, status, price_id, current_period_end, cancel_at_period_end]
+    - table_or_collection: invoices
+      fields: [id, user_id, stripe_invoice_id, amount, status, created_at]
+
+env_vars:
+  - STRIPE_SECRET_KEY
+  - STRIPE_PUBLISHABLE_KEY
+  - STRIPE_WEBHOOK_SECRET
+  - STRIPE_PRICE_ID_STARTER
+  - STRIPE_PRICE_ID_PRO
+
+webhooks:
+  endpoint: /api/webhooks/stripe
+  events:
+    - checkout.session.completed
+    - customer.subscription.created
+    - customer.subscription.updated
+    - customer.subscription.deleted
+    - invoice.paid
+    - invoice.payment_failed
+
+emits_outbound_events:
+  - subscription.created
+  - subscription.updated
+  - subscription.canceled
+  - invoice.paid
+  - invoice.payment_failed
+ingests_inbound_events:
+  - checkout.session.completed
+  - customer.subscription.created
+  - customer.subscription.updated
+  - customer.subscription.deleted
+  - invoice.paid
+  - invoice.payment_failed
+
+setup_steps:
+  - create_stripe_account
+  - enable_billing_in_dashboard
+  - create_products_and_prices
+  - configure_customer_portal_in_dashboard
+  - configure_tax_settings_if_required
+  - install_server_and_client_packages
+  - add_env_vars_to_local_and_hosted_environments
+  - implement_create_checkout_session_route
+  - implement_create_portal_session_route
+  - implement_webhook_handler_with_signature_verification
+  - register_webhook_endpoint_in_dashboard
+  - persist_customer_and_subscription_state_to_database
+  - implement_pricing_page_with_checkout_button
+  - implement_post_checkout_success_and_cancel_pages
+
+constraints:
+  - webhook_signature_verification_is_mandatory
+  - secret_key_must_never_be_exposed_to_client
+  - price_ids_must_be_environment_specific
+  - subscription_state_must_be_synced_via_webhooks_only_not_client
+  - test_mode_and_live_mode_keys_must_be_separated
+  - customer_portal_must_be_used_for_self_service_changes
+
+required_skills:
+  - webhook-signature-verification
+  - idempotency-key-pattern
+  - subscription-webhook-mirror-pattern
+
+common_failures:
+  - webhook_signature_verification_fails_due_to_raw_body_not_used
+  - duplicate_events_processed_due_to_missing_idempotency
+  - subscription_state_drift_when_webhook_endpoint_goes_down
+  - price_id_mismatch_between_environments
+
+runbook: docs/runbooks/integrations/stripe.md

@@ -1,0 +1,10 @@
+﻿integration: vanta
+category: compliance
+role: compliance_automation
+tier: advanced
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

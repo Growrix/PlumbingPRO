@@ -1,0 +1,299 @@
+{
+  "$schema": "feature-integration-map.v1",
+  "description": "Authoritative mapping from product features to required integrations. Agents MUST consult this file before planning any feature.",
+  "rules": {
+    "primary_integration_is_required": true,
+    "secondary_integrations_optional": true,
+    "unknown_feature_must_block_planning": true
+  },
+  "features": {
+    "auth": {
+      "primary": "clerk",
+      "secondary": [],
+      "implies": ["users_table"],
+      "rule_file": "knowledge/integration-rules/clerk.yaml"
+    },
+    "payments": {
+      "primary": "stripe",
+      "secondary": ["resend", "database"],
+      "implies": ["webhook_handler", "billing_emails", "subscriptions_table"],
+      "rule_file": "knowledge/integration-rules/stripe.yaml"
+    },
+    "subscriptions": {
+      "primary": "stripe",
+      "secondary": ["resend", "database"],
+      "implies": ["customer_portal", "subscriptions_table"],
+      "rule_file": "knowledge/integration-rules/stripe.yaml"
+    },
+    "blog": {
+      "primary": "sanity",
+      "secondary": [],
+      "implies": ["cms_studio", "slug_routes", "seo_schema"],
+      "rule_file": "knowledge/integration-rules/cms/sanity.yaml"
+    },
+    "marketing_pages": {
+      "primary": "sanity",
+      "secondary": [],
+      "implies": ["cms_studio", "page_blocks_schema"],
+      "rule_file": "knowledge/integration-rules/cms/sanity.yaml"
+    },
+    "documentation": {
+      "primary": "sanity",
+      "secondary": [],
+      "implies": ["cms_studio", "slug_routes", "nested_navigation"],
+      "rule_file": "knowledge/integration-rules/cms/sanity.yaml"
+    },
+    "emails": {
+      "primary": "resend",
+      "secondary": [],
+      "implies": ["email_templates", "email_logs_table"],
+      "rule_file": "knowledge/integration-rules/resend.yaml"
+    },
+    "transactional_emails": {
+      "primary": "resend",
+      "secondary": [],
+      "implies": ["email_templates", "email_logs_table"],
+      "rule_file": "knowledge/integration-rules/resend.yaml"
+    },
+    "analytics": {
+      "primary": "posthog",
+      "secondary": [],
+      "implies": ["typed_event_helper", "identify_on_signin", "reset_on_signout"],
+      "rule_file": "knowledge/integration-rules/analytics/posthog.yaml"
+    },
+    "feature_flags": {
+      "primary": "posthog",
+      "secondary": [],
+      "implies": ["server_side_evaluation_helper"],
+      "rule_file": "knowledge/integration-rules/analytics/posthog.yaml"
+    },
+    "dashboard": {
+      "primary": "database",
+      "secondary": ["clerk"],
+      "implies": ["protected_routes", "data_fetching_layer"],
+      "rule_file": "knowledge/integration-rules/database.yaml"
+    },
+    "admin_panel": {
+      "primary": "database",
+      "secondary": ["clerk"],
+      "implies": ["role_based_access", "audit_log_table"],
+      "rule_file": "knowledge/integration-rules/database.yaml"
+    },
+    "marketplace_listings": {
+      "primary": "database",
+      "secondary": ["sanity", "stripe"],
+      "implies": ["listings_table", "search_index", "checkout_per_listing"],
+      "rule_file": "knowledge/integration-rules/database.yaml"
+    },
+    "search": {
+      "primary": "meilisearch",
+      "secondary": ["database"],
+      "implies": ["search_index", "indexing_service", "search_proxy_route"],
+      "rule_file": "knowledge/integration-rules/meilisearch.yaml"
+    },
+    "full_text_search": {
+      "primary": "meilisearch",
+      "secondary": ["database"],
+      "implies": ["search_index", "indexing_service", "faceted_search_ui"],
+      "rule_file": "knowledge/integration-rules/meilisearch.yaml"
+    },
+    "file_uploads": {
+      "primary": "uploadthing",
+      "secondary": ["database"],
+      "implies": ["files_table", "upload_routes", "per_route_auth_middleware"],
+      "rule_file": "knowledge/integration-rules/uploadthing.yaml"
+    },
+    "avatar_uploads": {
+      "primary": "uploadthing",
+      "secondary": ["database"],
+      "implies": ["files_table", "avatar_upload_route"],
+      "rule_file": "knowledge/integration-rules/uploadthing.yaml"
+    },
+    "notifications": {
+      "primary": "resend",
+      "secondary": ["database"],
+      "implies": ["notifications_table", "email_templates"],
+      "rule_file": "knowledge/integration-rules/resend.yaml"
+    },
+    "notification_center": {
+      "primary": "knock",
+      "secondary": ["database"],
+      "implies": ["in_app_inbox", "channel_preferences", "deep_link_targets"],
+      "rule_file": "knowledge/integration-rules/notifications/knock.yaml"
+    },
+    "onboarding_tours": {
+      "primary": "userflow",
+      "secondary": ["posthog"],
+      "implies": ["checklist_steps", "tour_targets", "completion_events"],
+      "rule_file": "knowledge/integration-rules/onboarding/userflow.yaml"
+    },
+    "in_app_help": {
+      "primary": "mintlify",
+      "secondary": ["posthog"],
+      "implies": ["contextual_help_entries", "docs_deep_links"],
+      "rule_file": "knowledge/integration-rules/docs/mintlify.yaml"
+    },
+    "activity_feed": {
+      "primary": "knock",
+      "secondary": ["database"],
+      "implies": ["timeline_events", "actor_metadata", "event_filters"],
+      "rule_file": "knowledge/integration-rules/notifications/knock.yaml"
+    },
+    "multi_tenant_workspaces": {
+      "primary": "workos",
+      "secondary": ["clerk", "database"],
+      "implies": ["org_switcher", "tenant_scoped_sessions", "membership_management"],
+      "rule_file": "knowledge/integration-rules/auth/workos.yaml"
+    },
+    "saved_views": {
+      "primary": "database",
+      "secondary": ["upstash"],
+      "implies": ["saved_query_model", "share_scope", "default_view_selection"],
+      "rule_file": "knowledge/integration-rules/database.yaml"
+    },
+    "undo_revert": {
+      "primary": "database",
+      "secondary": ["inngest"],
+      "implies": ["version_history", "revert_operation", "undo_window"],
+      "rule_file": "knowledge/integration-rules/database.yaml"
+    },
+    "comments_mentions": {
+      "primary": "liveblocks",
+      "secondary": ["knock", "database"],
+      "implies": ["thread_model", "mention_resolution", "mention_notifications"],
+      "rule_file": "knowledge/integration-rules/realtime/liveblocks.yaml"
+    },
+    "realtime_updates": {
+      "primary": "pusher",
+      "secondary": ["database", "upstash"],
+      "implies": ["tenant_scoped_channels", "reconnect_state_machine", "event_deduplication"],
+      "rule_file": "knowledge/integration-rules/realtime/pusher.yaml"
+    },
+    "collaborative_presence": {
+      "primary": "liveblocks",
+      "secondary": ["clerk", "database"],
+      "implies": ["room_auth_endpoint", "presence_roster", "tenant_scoped_room_ids"],
+      "rule_file": "knowledge/integration-rules/realtime/liveblocks.yaml"
+    },
+    "collaborative_editing": {
+      "primary": "liveblocks",
+      "secondary": ["database", "upstash"],
+      "implies": ["optimistic_patch_reducer", "versioned_mutations", "snapshot_reconciliation"],
+      "rule_file": "knowledge/integration-rules/realtime/liveblocks.yaml"
+    },
+    "ai_chat": {
+      "primary": "openai",
+      "secondary": ["database", "upstash", "inngest"],
+      "implies": ["conversations_table", "messages_table", "ai_usage_table", "streaming_route", "per_user_rate_limit"],
+      "rule_file": "knowledge/integration-rules/openai.yaml"
+    },
+    "ai_citations": {
+      "primary": "openai",
+      "secondary": ["turbopuffer", "database"],
+      "implies": ["citation_payloads", "source_linking", "citation_rendering"],
+      "rule_file": "knowledge/integration-rules/ai/openai.yaml"
+    },
+    "ai_regenerate_feedback": {
+      "primary": "openai",
+      "secondary": ["database"],
+      "implies": ["message_feedback_log", "regenerate_attempt_tracking"],
+      "rule_file": "knowledge/integration-rules/ai/openai.yaml"
+    },
+    "ai_tool_use": {
+      "primary": "openai",
+      "secondary": ["inngest", "database"],
+      "implies": ["tool_invocation_log", "tool_result_rendering", "tool_call_timeline"],
+      "rule_file": "knowledge/integration-rules/ai/openai.yaml"
+    },
+    "ai_cost_meter": {
+      "primary": "helicone",
+      "secondary": ["openai", "database"],
+      "implies": ["usage_budget_display", "tenant_quota_tracking", "limit_warnings"],
+      "rule_file": "knowledge/integration-rules/ai/helicone.yaml"
+    },
+    "ai_completions": {
+      "primary": "openai",
+      "secondary": ["database", "upstash"],
+      "implies": ["ai_usage_table", "per_user_rate_limit"],
+      "rule_file": "knowledge/integration-rules/openai.yaml"
+    },
+    "semantic_search": {
+      "primary": "openai",
+      "secondary": ["database", "meilisearch"],
+      "implies": ["embeddings_generation", "vector_storage_or_index", "similarity_query"],
+      "rule_file": "knowledge/integration-rules/openai.yaml"
+    },
+    "background_jobs": {
+      "primary": "inngest",
+      "secondary": [],
+      "implies": ["inngest_client_singleton", "app_api_inngest_route", "function_definitions"],
+      "rule_file": "knowledge/integration-rules/inngest.yaml"
+    },
+    "scheduled_tasks": {
+      "primary": "inngest",
+      "secondary": [],
+      "implies": ["inngest_client_singleton", "cron_function_definitions"],
+      "rule_file": "knowledge/integration-rules/inngest.yaml"
+    },
+    "event_driven_workflows": {
+      "primary": "inngest",
+      "secondary": [],
+      "implies": ["inngest_client_singleton", "fan_out_functions", "event_emit_helpers"],
+      "rule_file": "knowledge/integration-rules/inngest.yaml"
+    },
+    "caching": {
+      "primary": "upstash",
+      "secondary": [],
+      "implies": ["redis_client_singleton", "cache_helpers_with_typed_keys", "ttl_policy"],
+      "rule_file": "knowledge/integration-rules/upstash.yaml"
+    },
+    "rate_limiting": {
+      "primary": "upstash",
+      "secondary": [],
+      "implies": ["ratelimit_helpers_per_scope", "429_response_with_retry_after"],
+      "rule_file": "knowledge/integration-rules/upstash.yaml"
+    },
+    "error_tracking": {
+      "primary": "sentry",
+      "secondary": [],
+      "implies": ["sentry_init_client", "sentry_init_server", "source_map_uploads"],
+      "rule_file": "knowledge/integration-rules/sentry.yaml"
+    },
+    "logging": {
+      "primary": "axiom",
+      "secondary": [],
+      "implies": ["logger_module", "request_id_middleware", "structured_log_helpers"],
+      "rule_file": "knowledge/integration-rules/axiom.yaml"
+    },
+    "observability": {
+      "primary": "axiom",
+      "secondary": ["sentry", "posthog"],
+      "implies": ["logger_module", "error_tracker", "analytics_events"],
+      "rule_file": "knowledge/integration-rules/axiom.yaml"
+    },
+    "api_keys": {
+      "primary": "database",
+      "secondary": ["upstash"],
+      "implies": ["api_keys_table", "key_hashing_service", "per_key_rate_limit", "usage_metering"],
+      "rule_file": "knowledge/integration-rules/database.yaml"
+    },
+    "webhook_delivery": {
+      "primary": "inngest",
+      "secondary": ["database"],
+      "implies": ["webhook_endpoints_table", "webhook_deliveries_table", "retry_function"],
+      "rule_file": "knowledge/integration-rules/inngest.yaml"
+    },
+    "changelog": {
+      "primary": "sanity",
+      "secondary": [],
+      "implies": ["cms_studio", "slug_routes", "changelog_schema"],
+      "rule_file": "knowledge/integration-rules/sanity.yaml"
+    },
+    "testimonials": {
+      "primary": "sanity",
+      "secondary": [],
+      "implies": ["cms_studio", "testimonials_schema"],
+      "rule_file": "knowledge/integration-rules/sanity.yaml"
+    }
+  }
+}

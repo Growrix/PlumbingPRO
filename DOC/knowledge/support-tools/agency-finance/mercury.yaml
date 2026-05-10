@@ -1,0 +1,9 @@
+﻿integration: mercury
+category: agency-finance
+role: business_banking
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

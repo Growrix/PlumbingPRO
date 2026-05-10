@@ -1,0 +1,9 @@
+﻿integration: crisp
+category: customer-comms
+role: live_chat
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

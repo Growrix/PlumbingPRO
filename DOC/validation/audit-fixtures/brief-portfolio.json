@@ -1,0 +1,47 @@
+{
+  "$fixture": "brief-portfolio",
+  "purpose": "Tests the portfolio path: no auth, no payments, work-led case studies, craft-led visual archetype.",
+  "expected_outcome": "pass",
+  "expected_block_stage": null,
+  "input": {
+    "user_request": "Portfolio site for an independent designer. Case studies, about, contact form. No commerce, no accounts.",
+    "client_brief": {
+      "brand_name": null,
+      "brand_voice": "editorial",
+      "logo_url": null,
+      "color_seed": null,
+      "target_locale": "en-US",
+      "target_regions": [],
+      "deadline": null,
+      "budget_band": "low"
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "none",
+      "no_auth": true,
+      "no_payments": true
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "portfolio_site",
+    "industry_class": "creator_or_portfolio",
+    "industry_pack": "knowledge/industries/creator-portfolio.md",
+    "visual_archetype": "knowledge/frontend-rules/visual-archetypes/portfolio-craft.md",
+    "tier_band": "basic"
+  },
+  "expected_features": [
+    "marketing_pages",
+    "case_studies",
+    "forms",
+    "analytics",
+    "seo"
+  ],
+  "expected_integrations_min": {
+    "cms": "sanity",
+    "transactional_emails": "resend",
+    "analytics": "posthog"
+  },
+  "expected_preset": "tier-basic-marketing-site",
+  "expected_min_assumptions": 2,
+  "expected_open_questions_min": 1
+}

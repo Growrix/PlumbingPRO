@@ -1,0 +1,10 @@
+﻿integration: stripe-radar
+category: security
+role: fraud_protection
+tier: advanced
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

@@ -1,0 +1,68 @@
+integration: axiom
+category: observability
+role: logging
+tier: basic
+default_for_archetypes:
+  - saas_app
+  - ecommerce
+  - marketplace
+  - marketing_site
+alternatives:
+  - betterstack-logs
+  - datadog-logs
+cost_band: free
+compliance_tags:
+  - gdpr-ready
+boundary: both
+
+package_name: next-axiom
+server_packages:
+  - next-axiom
+  - pino
+  - pino-axiom
+
+use_cases:
+  - structured_log_ingestion
+  - request_logging
+  - error_logging
+  - audit_events
+  - query_logs_in_dashboard
+
+required_components:
+  backend:
+    - pino_logger_singleton
+    - axiom_transport_for_pino
+    - request_id_middleware
+  frontend:
+    - web_vitals_reporting_via_next_axiom
+
+env_vars:
+  - AXIOM_DATASET
+  - AXIOM_TOKEN
+
+webhooks: {}
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_axiom_account
+  - create_dataset
+  - install_packages
+  - configure_pino_with_axiom_transport
+  - add_env_vars
+  - implement_request_id_middleware
+  - verify_logs_arrive_in_axiom_dashboard
+
+constraints:
+  - token_must_never_be_exposed_to_client
+  - pii_must_be_stripped_from_log_lines
+  - structured_json_logs_only
+
+required_skills: []
+
+common_failures:
+  - pii_in_log_lines
+  - token_exposed_in_frontend_bundle
+
+runbook: docs/runbooks/integrations/axiom.md

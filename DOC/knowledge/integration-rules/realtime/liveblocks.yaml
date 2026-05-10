@@ -1,0 +1,77 @@
+integration: liveblocks
+category: realtime
+role: collaboration_presence
+tier: advanced
+default_for_archetypes:
+  - saas_app
+alternatives:
+  - pusher
+  - supabase-realtime
+cost_band: mid
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: "@liveblocks/node"
+client_packages:
+  - "@liveblocks/client"
+  - "@liveblocks/react"
+server_packages:
+  - "@liveblocks/node"
+
+use_cases:
+  - multiplayer_presence
+  - collaborative_editing
+  - shared_cursors
+  - comments_and_mentions
+
+required_components:
+  frontend:
+    - liveblocks_provider_at_app_shell
+    - room_context_hooks
+    - presence_avatar_bar
+    - optimistic_local_mutation_layer
+  backend:
+    - liveblocks_auth_endpoint
+    - room_access_policy_guard
+    - tenant_scoped_room_id_helper
+
+env_vars:
+  - LIVEBLOCKS_SECRET_KEY
+  - NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY
+
+webhooks: {}
+
+emits_outbound_events:
+  - room.joined
+  - room.left
+  - comment.created
+ingests_inbound_events: []
+
+setup_steps:
+  - create_liveblocks_project
+  - copy_public_and_secret_keys_to_env
+  - install_liveblocks_packages
+  - implement_server_auth_endpoint_for_room_access
+  - attach_liveblocks_provider_to_app
+  - define_room_id_naming_with_tenant_scope
+  - add_presence_and_connection_indicators_to_collab_views
+
+constraints:
+  - room_access_must_be_authorized_server_side
+  - room_ids_must_include_tenant_or_workspace_scope
+  - presence_payload_must_exclude_sensitive_personal_data
+  - realtime_mutations_must_support_reconciliation_after_reconnect
+
+required_skills:
+  - presence-tracking-pattern
+  - websocket-reconnect-pattern
+  - optimistic-ui-pattern
+  - comments-mentions-pattern
+
+common_failures:
+  - auth_endpoint_allows_unscoped_room_access
+  - room_id_collision_across_tenants
+  - stale_presence_state_after_tab_sleep_or_network_drop
+
+runbook: docs/runbooks/integrations/liveblocks.md

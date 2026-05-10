@@ -1,0 +1,73 @@
+integration: uploadthing
+category: storage
+role: file_storage
+tier: standard
+default_for_archetypes:
+  - saas_app
+  - ecommerce
+  - marketplace
+alternatives:
+  - r2
+  - s3
+cost_band: free
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: uploadthing
+server_packages:
+  - uploadthing
+  - "@uploadthing/next"
+client_packages:
+  - "@uploadthing/react"
+
+use_cases:
+  - file_uploads
+  - image_uploads
+  - document_uploads
+  - browser_direct_uploads
+  - per_route_file_type_restrictions
+
+required_components:
+  frontend:
+    - uploadthing_components
+    - upload_button_or_dropzone
+  backend:
+    - uploadthing_core_router
+    - api_route_uploadthing_handler
+    - upload_type_validators
+
+env_vars:
+  - UPLOADTHING_SECRET
+  - UPLOADTHING_APP_ID
+
+webhooks:
+  endpoint: /api/uploadthing
+  events:
+    - file.uploaded
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_uploadthing_account
+  - install_packages
+  - create_file_router_with_upload_type_definitions
+  - implement_api_route_handler
+  - add_middleware_to_associate_uploads_with_user
+  - use_uploadthing_components_in_frontend
+  - add_env_vars
+
+constraints:
+  - file_type_and_size_limits_must_be_declared_on_server
+  - uploaded_file_urls_must_be_stored_in_database
+  - auth_context_must_be_checked_in_upload_middleware
+
+required_skills:
+  - direct-browser-upload-pattern
+
+common_failures:
+  - missing_auth_in_middleware_allows_anonymous_uploads
+  - file_url_not_saved_after_upload_complete
+
+runbook: docs/runbooks/integrations/uploadthing.md

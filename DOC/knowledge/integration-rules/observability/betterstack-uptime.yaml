@@ -1,0 +1,57 @@
+﻿integration: betterstack-uptime
+category: observability
+role: uptime_monitoring
+tier: standard
+default_for_archetypes: [saas_app, ecommerce, marketing_site, marketplace]
+alternatives: [checkly, pingdom, uptimerobot]
+cost_band: free_tier_available
+compliance_tags: []
+boundary: support
+status: active
+description: External uptime monitoring with alerting. Monitors /api/health and key public endpoints. Integrates with the Better Stack status page.
+
+required_env_vars:
+	- BETTERSTACK_UPTIME_API_KEY  # server-only; for programmatic monitor management via API
+
+packages: []  # Configuration via dashboard or Terraform; no npm package needed
+
+required_skills: []
+
+webhooks:
+	alert_incoming:
+		endpoint: /api/webhooks/betterstack/uptime (optional; for app-side incident creation)
+		events: [monitor.down, monitor.up]
+		verification: shared secret in header
+
+monitors_to_create:
+	- url: /api/health            check_interval: 60s  locations: [eu-west, us-east]
+	- url: /                      check_interval: 5min locations: [eu-west, us-east]
+	- url: /api/webhooks/stripe   check_interval: 5min keyword_check: none
+
+health_endpoint_requirements:
+	- GET /api/health must return 200 JSON with { status: "ok", checks: { db: "ok", ... } }
+	- Must check database connectivity, critical third-party APIs
+	- Must respond within 3 seconds
+
+setup_steps:
+	- Create Better Stack account at betterstack.com
+	- Create monitors for each URL above in Uptime dashboard
+	- Set alert destinations (email, Slack, PagerDuty)
+	- Link monitors to Better Stack Status Page (see betterstack-status.yaml)
+	- Copy API key to BETTERSTACK_UPTIME_API_KEY env var
+	- Implement /api/health endpoint in the app
+
+constraints:
+	- MUST monitor /api/health from at least 2 geographic regions
+	- Health endpoint MUST NOT require authentication
+	- MUST configure at least one escalation contact per alert policy
+	- SLO: 99.9% uptime target; alert when availability < 99.5% over 30 days
+
+common_failures:
+	- /api/health timing out under load (add DB connection pool check with timeout)
+	- False positives from single-region monitor (use multi-region)
+
+emits_outbound_events: []
+ingests_inbound_events: [monitor.down, monitor.up]
+
+runbook: docs/runbooks/betterstack-uptime.md

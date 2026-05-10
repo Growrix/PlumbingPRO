@@ -1,0 +1,9 @@
+﻿integration: snaplet
+category: backups
+role: db_backup
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

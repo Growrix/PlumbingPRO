@@ -1,0 +1,9 @@
+﻿integration: screaming-frog
+category: seo
+role: site_crawl
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

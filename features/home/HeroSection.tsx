@@ -35,7 +35,7 @@ const fadeUp = {
 };
 
 const heroBackgroundImage =
-  "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1600&q=80";
+  "/Images/Homepage%20Hero/stevepb-plumbing-840835_1920.jpg";
 
 export function HeroSection() {
   return (

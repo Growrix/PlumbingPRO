@@ -1,0 +1,43 @@
+{
+  "$fixture": "brief-marketing-site-plumber",
+  "purpose": "Smallest viable input; tests the strategist's gap-filling for a local-services template.",
+  "expected_outcome": "pass",
+  "expected_block_stage": null,
+  "input": {
+    "user_request": "build a plumber website template",
+    "client_brief": {
+      "brand_name": null,
+      "brand_voice": null,
+      "logo_url": null,
+      "color_seed": null,
+      "target_locale": null,
+      "target_regions": [],
+      "deadline": null,
+      "budget_band": null
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "none",
+      "no_auth": true,
+      "no_payments": true
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "marketing_site",
+    "industry_class": "local_services",
+    "industry_pack": "knowledge/industries/local-services.md",
+    "visual_archetype": "knowledge/frontend-rules/visual-archetypes/local-business-trust.md",
+    "tier_band": "basic"
+  },
+  "expected_features": [
+    "marketing_pages",
+    "forms",
+    "reviews",
+    "analytics",
+    "transactional_emails",
+    "seo"
+  ],
+  "expected_preset": "tier-basic-marketing-site",
+  "expected_min_assumptions": 3,
+  "expected_open_questions_min": 1
+}

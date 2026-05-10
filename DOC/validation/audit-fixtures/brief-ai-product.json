@@ -1,0 +1,65 @@
+{
+  "$fixture": "brief-ai-product",
+  "purpose": "Tests AI-product path: streaming chat surface, multi-provider LLM, vector DB, AI cost tracking.",
+  "expected_outcome": "pass",
+  "expected_block_stage": null,
+  "input": {
+    "user_request": "AI writing assistant SaaS. Streaming chat, retrieval over user docs, subscription billing, free tier with usage limits, history per user. Need tracing for prompts and per-user cost tracking.",
+    "client_brief": {
+      "brand_name": "Quill",
+      "brand_voice": "ai-native",
+      "logo_url": null,
+      "color_seed": "#5B5BD6",
+      "target_locale": "en-US",
+      "target_regions": ["US", "EU"],
+      "deadline": null,
+      "budget_band": "high"
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "postgres",
+      "no_auth": false,
+      "no_payments": false
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "saas_app",
+    "industry_class": "ai_first",
+    "visual_archetype": "knowledge/frontend-rules/visual-archetypes/ai-product.md",
+    "tier_band": "advanced"
+  },
+  "expected_features": [
+    "auth",
+    "payments",
+    "subscriptions",
+    "ai_chat",
+    "ai_retrieval",
+    "ai_cost_tracking",
+    "ai_observability",
+    "transactional_emails",
+    "analytics",
+    "dashboard",
+    "marketing_pages"
+  ],
+  "expected_integrations_min": {
+    "auth": "clerk",
+    "payments": "stripe",
+    "ai_llm": "openai",
+    "ai_vector_db": "turbopuffer",
+    "ai_observability": "langfuse",
+    "ai_cost_tracking": "helicone",
+    "transactional_emails": "resend",
+    "analytics": "posthog"
+  },
+  "expected_preset": "tier-advanced-ai-product",
+  "expected_automation_surface": {
+    "outbound_enabled": true
+  },
+  "expected_required_skills_min": [
+    "streaming-llm-response-pattern",
+    "ai-cost-tracking-pattern",
+    "retrieval-augmented-generation-pattern"
+  ],
+  "expected_min_assumptions": 2,
+  "expected_open_questions_min": 0
+}

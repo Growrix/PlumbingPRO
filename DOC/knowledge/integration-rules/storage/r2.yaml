@@ -1,0 +1,10 @@
+﻿integration: r2
+category: storage
+role: file_storage
+tier: standard
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

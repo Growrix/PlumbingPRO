@@ -1,0 +1,70 @@
+﻿integration: knock
+category: notifications
+role: notifications
+tier: standard
+default_for_archetypes: [saas_app, ecommerce, marketplace]
+alternatives: [novu, courier]
+cost_band: low
+compliance_tags: [gdpr]
+boundary: app
+status: active
+description: Multi-channel notification fan-out (in-app, email, SMS, push, Slack). Manages notification preferences, digests, and delivery history per user.
+
+required_env_vars:
+  - KNOCK_SECRET_API_KEY       # server-only
+  - NEXT_PUBLIC_KNOCK_API_KEY  # client; for in-app notification feed
+  - NEXT_PUBLIC_KNOCK_FEED_CHANNEL_ID  # client; in-app feed channel ID from Knock dashboard
+
+packages:
+  - "@knocklabs/node"          # server SDK
+  - "@knocklabs/react"         # client; in-app notification feed component
+
+required_skills:
+  - webhook-signature-verification
+  - idempotency-key-pattern
+  - notification-preferences-pattern
+  - activity-feed-pattern
+
+webhooks:
+  outbound:
+    endpoint: /api/webhooks/knock
+    events: [notification.delivered, notification.bounced, notification.seen]
+    verification: x-knock-signature header
+
+required_components:
+  backend:
+    - Knock client singleton (lib/knock.ts)
+    - triggerNotification(workflow, userId, data) helper
+    - Webhook handler (/api/webhooks/knock)
+  frontend:
+    - <KnockFeedProvider> wrapping the app shell
+    - <NotificationFeed> dropdown component in navbar
+  database:
+    - Knock manages delivery history; local DB only stores user.knock_id mapping
+
+notification_workflows:
+  - slug: welcome-email       — trigger: user.created
+  - slug: subscription-confirmation — trigger: subscription.created
+  - slug: payment-failed-alert — trigger: invoice.payment_failed
+  - slug: new-comment         — trigger: comment.created (if applicable)
+
+setup_steps:
+  - Create Knock account at knock.app
+  - Create notification workflows in Knock dashboard for each workflow above
+  - Copy API keys to env
+  - Add in-app channel and copy Feed Channel ID
+  - Identify users in Knock on sign-up (call Knock.identify)
+
+constraints:
+  - MUST call Knock.identify before triggering any workflow for a user
+  - MUST NOT send PII in workflow data beyond what the template needs
+  - MUST respect user notification preferences (Knock manages per-channel opt-outs)
+
+common_failures:
+  - Triggering a workflow before user is identified → silent drop
+  - Using wrong channel ID in client feed → blank notification panel
+
+emits_outbound_events: []
+ingests_inbound_events: [notification.delivered, notification.bounced]
+
+runbook: docs/runbooks/knock.md

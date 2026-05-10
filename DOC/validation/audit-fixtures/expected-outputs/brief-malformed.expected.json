@@ -1,0 +1,15 @@
+{
+  "$fixture": "brief-malformed",
+  "expected_artifacts": [],
+  "expected_brief_shape": null,
+  "expected_block_response": {
+    "status": "BLOCK",
+    "reason": "EMPTY_REQUEST",
+    "stage": "intake_strategist"
+  },
+  "expected_validation_report": null,
+  "verification": {
+    "must_fail_at": "intake_strategist",
+    "must_not_produce": ["brief.json", "brief.md", "plan.json", "validation_report.json"]
+  }
+}

@@ -1,0 +1,51 @@
+﻿integration: betterstack-status
+category: observability
+role: status_page
+tier: standard
+default_for_archetypes: [saas_app, ecommerce, marketplace]
+alternatives: [statuspage, instatus]
+cost_band: free_tier_available
+compliance_tags: []
+boundary: support
+status: active
+description: Public-facing status page. Displays real-time and historical uptime for all monitored services. Linked to Better Stack Uptime monitors.
+
+required_env_vars:
+	- BETTERSTACK_STATUS_PAGE_ID  # server-only; for programmatic incident creation
+	- BETTERSTACK_STATUS_API_KEY  # server-only; for posting incidents and updates
+
+packages: []  # Hosted external service; embed via iframe or JS widget optionally
+
+required_skills: []
+
+webhooks: none
+
+status_page_components:
+	- name: API              monitors: [/api/health]
+	- name: Web App          monitors: [/]
+	- name: Authentication   monitors: [/api/webhooks/clerk status callback]
+	- name: Payments         monitors: [Stripe status RSS feed optional]
+	- name: Database         monitors: [/api/health db check]
+
+setup_steps:
+	- Create Better Stack account at betterstack.com
+	- Create a Status Page under Uptime → Status Pages
+	- Set custom domain (status.yourdomain.com) with DNS CNAME
+	- Add components matching the services monitored in betterstack-uptime.yaml
+	- Link each component to its Uptime monitor for auto-status updates
+	- Add status page URL to app footer and docs
+
+constraints:
+	- Status page MUST be on a separate domain from the app (so it works during app outage)
+	- MUST manually post an incident update within 15 minutes of a detected P1 outage
+	- MUST auto-resolve incidents when monitors recover
+	- MUST link status page in app footer for enterprise customers
+
+common_failures:
+	- Status page on the same domain as the app goes down with the app
+	- Forgetting to post incident updates during outages harms trust
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+runbook: docs/runbooks/betterstack-status.md

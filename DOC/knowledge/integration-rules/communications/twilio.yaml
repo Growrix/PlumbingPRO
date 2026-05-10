@@ -1,0 +1,69 @@
+﻿integration: twilio
+category: communications
+role: sms
+tier: standard
+default_for_archetypes: [saas_app, ecommerce, marketplace]
+alternatives: [vonage, messagebird]
+cost_band: low
+compliance_tags: [tcpa, gdpr]
+boundary: app
+status: active
+description: SMS, WhatsApp, and voice communications. Used for OTP, appointment reminders, order alerts, and marketing messages.
+
+required_env_vars:
+  - TWILIO_ACCOUNT_SID        # server-only
+  - TWILIO_AUTH_TOKEN         # server-only
+  - TWILIO_FROM_NUMBER        # server-only; E.164 format e.g. +15551234567
+
+optional_env_vars:
+  - TWILIO_WEBHOOK_SECRET     # server-only; for validating inbound message webhooks
+
+packages:
+  - twilio                    # npm package
+
+required_skills:
+  - webhook-signature-verification
+  - form-spam-guard-pattern
+
+webhooks:
+  inbound_sms:
+    endpoint: /api/webhooks/twilio/sms
+    events: [message.received]
+    verification: x-twilio-signature header (HMAC-SHA1 with AuthToken)
+  status_callback:
+    endpoint: /api/webhooks/twilio/status
+    events: [message.delivered, message.failed]
+
+required_components:
+  backend:
+    - Twilio client singleton (lib/twilio.ts)
+    - sendSms(to, body) helper
+    - Inbound webhook handler (/api/webhooks/twilio/sms)
+    - Status callback handler (/api/webhooks/twilio/status)
+  database:
+    - sms_log table: id, user_id, direction (outbound|inbound), to_number, from_number, body, status, twilio_sid, created_at
+
+setup_steps:
+  - Create Twilio account at console.twilio.com
+  - Purchase a phone number with SMS capability
+  - Add TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER to env
+  - Configure inbound webhook URL in Twilio console (Messaging → Phone Numbers)
+  - Configure status callback URL in Twilio console
+  - Register 10DLC campaign (US) or get GDPR consent records for EU
+
+constraints:
+  - MUST obtain explicit opt-in consent before sending marketing SMS (TCPA/GDPR)
+  - MUST honor STOP replies immediately and record opt-out in database
+  - MUST NOT send to unverified numbers in trial mode (Twilio restriction)
+  - MUST validate inbound webhook signature before processing
+  - Phone numbers must be in E.164 format
+
+common_failures:
+  - Missing geo permissions block international sends (enable in console)
+  - 30007 carrier filtering: avoid URL shorteners, trigger words, no opt-out footer
+  - Trial account can only send to verified numbers
+
+emits_outbound_events: []
+ingests_inbound_events: [message.received, message.delivered, message.failed]
+
+runbook: docs/runbooks/twilio.md

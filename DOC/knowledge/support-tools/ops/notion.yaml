@@ -1,0 +1,9 @@
+﻿integration: notion
+category: ops
+role: runbook_storage
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

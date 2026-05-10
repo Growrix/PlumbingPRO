@@ -1,0 +1,10 @@
+﻿integration: postmark
+category: email
+role: email_transactional
+tier: basic
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

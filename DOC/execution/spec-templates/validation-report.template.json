@@ -1,0 +1,70 @@
+{
+  "validation_version": "1.0",
+  "generated_at": "<ISO-8601>",
+  "branch": "<branch-name>",
+  "pre_planning": {
+    "status": "passed|failed",
+    "items": []
+  },
+  "pre_build": {
+    "status": "passed|failed",
+    "items": []
+  },
+  "pre_deployment": {
+    "status": "passed|failed|skipped",
+    "items": []
+  },
+  "constraints": [
+    { "id": "C1", "status": "passed|failed", "reason": "", "evidence": "" }
+  ],
+  "frontend": {
+    "status": "passed|failed",
+    "checks": [
+      { "id": "F1", "status": "passed|failed", "reason": "", "evidence": "" }
+    ]
+  },
+  "accessibility": {
+    "status": "passed|failed",
+    "checks": [
+      { "id": "AC1", "status": "passed|failed", "reason": "", "evidence": "" }
+    ]
+  },
+  "security_constraints": [
+    { "id": "SC1", "status": "passed|failed", "reason": "", "evidence": "" }
+  ],
+  "performance_constraints": [
+    { "id": "PC1", "status": "passed|failed", "reason": "", "evidence": "" }
+  ],
+  "data_constraints": [
+    { "id": "DC1", "status": "passed|failed", "reason": "", "evidence": "" }
+  ],
+  "testing_constraints": {
+    "status": "passed|failed",
+    "checks": [
+      { "id": "TC1", "status": "passed|failed", "reason": "", "evidence": "" }
+    ]
+  },
+  "integration_constraints": {
+    "status": "passed|failed",
+    "checks": [
+      { "id": "I1", "status": "passed|failed", "reason": "", "evidence": "" }
+    ]
+  },
+  "anti_hallucination": {
+    "status": "passed|failed",
+    "violations": []
+  },
+  "ownership": {
+    "status": "passed|failed",
+    "violations": []
+  },
+  "drift": {
+    "status": "passed|failed",
+    "violations": []
+  },
+  "verdict": "READY|NOT_READY",
+  "verdict_reason": "<single sentence>",
+  "blockers": [],
+  "advisories": [],
+  "status": "passed|failed"
+}

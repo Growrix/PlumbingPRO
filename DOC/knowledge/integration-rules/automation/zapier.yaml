@@ -1,0 +1,10 @@
+﻿integration: zapier
+category: automation
+role: consumer_automation
+tier: automation
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

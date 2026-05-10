@@ -1,0 +1,65 @@
+{
+  "$fixture": "brief-ai-product",
+  "expected_artifacts": [
+    "brief.json",
+    "brief.md",
+    "integrations.json",
+    "automation.json",
+    "frontend-plan.json",
+    "backend-plan.json",
+    "devops.json",
+    "testing.json",
+    "security.json",
+    "security_report.json",
+    "performance.json",
+    "plan.json",
+    "decisions.json",
+    "validation_report.json"
+  ],
+  "expected_brief_shape": {
+    "project": {
+      "archetype": "saas_app",
+      "industry": { "class": "ai_first" },
+      "tier_band": "advanced"
+    },
+    "brand": {
+      "voice": "ai-native",
+      "visual_archetype": "knowledge/frontend-rules/visual-archetypes/ai-product.md",
+      "palette_seed": "#5B5BD6"
+    },
+    "features_min": [
+      "auth",
+      "payments",
+      "subscriptions",
+      "ai_chat",
+      "ai_retrieval",
+      "ai_cost_tracking",
+      "ai_observability",
+      "transactional_emails",
+      "analytics",
+      "dashboard"
+    ],
+    "integrations_min": {
+      "auth": "clerk",
+      "payments": "stripe",
+      "ai_llm": "openai",
+      "ai_observability": "langfuse"
+    },
+    "lock_status": "DRAFT"
+  },
+  "expected_integrations_preset": "tier-advanced-ai-product",
+  "expected_required_skills_min": [
+    "streaming-llm-response-pattern",
+    "ai-cost-tracking-pattern",
+    "retrieval-augmented-generation-pattern",
+    "ai-moderation-precheck-pattern"
+  ],
+  "expected_automation": {
+    "outbound_enabled": true
+  },
+  "expected_validation_report": {
+    "status": "passed",
+    "constraints_min_passed": ["C1", "C7", "C10", "F1", "AC1", "SC1", "SC10", "I1", "I2", "I3"]
+  },
+  "expected_block_response": null
+}

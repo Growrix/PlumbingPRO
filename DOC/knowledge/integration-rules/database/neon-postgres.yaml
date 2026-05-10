@@ -1,0 +1,77 @@
+integration: neon-postgres
+category: database
+role: database
+tier: standard
+default_for_archetypes:
+  - saas_app
+  - ecommerce
+  - marketplace
+  - dashboard_tool
+alternatives:
+  - supabase
+  - vercel-postgres
+  - planetscale-postgres
+cost_band: free
+compliance_tags:
+  - gdpr-ready
+  - soc2-friendly
+boundary: app
+
+recommended_orm: prisma
+server_packages:
+  - "@prisma/client"
+  - "@neondatabase/serverless"
+dev_packages:
+  - prisma
+
+use_cases:
+  - relational_data
+  - transactions
+  - strong_consistency
+  - branching_for_preview_environments
+  - serverless_compatible_pooling
+
+required_components:
+  backend:
+    - prisma_schema_file
+    - migration_folder
+    - db_client_singleton
+    - repository_layer_per_aggregate
+  devops:
+    - neon_project_with_branches_per_environment
+
+env_vars:
+  - DATABASE_URL
+  - DATABASE_URL_UNPOOLED
+
+webhooks: {}
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_neon_project
+  - create_dev_and_prod_branches
+  - initialize_prisma
+  - define_schema
+  - run_initial_migration
+  - create_db_client_singleton
+  - configure_connection_pooling
+  - set_env_vars_per_environment
+
+constraints:
+  - database_url_must_never_be_exposed_to_client
+  - migrations_must_be_run_in_ci_not_manually
+  - connection_pooling_required_in_serverless_environment
+
+required_skills:
+  - idempotency-key-pattern
+  - per-tenant-tokens-pattern
+
+common_failures:
+  - too_many_connections_without_pooling
+  - migration_conflicts_in_team_development
+
+runbook: docs/runbooks/integrations/neon-postgres.md
+
+# Note: legacy flat file was database.yaml — now split into neon-postgres.yaml per role

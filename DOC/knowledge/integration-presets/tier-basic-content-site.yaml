@@ -1,0 +1,37 @@
+preset: tier-basic-content-site
+applies_to:
+  archetype: content_site
+  tier_band: basic
+description: Blog or publication site. CMS-driven content, no auth wall, no payments.
+
+integrations:
+  hosting:        vercel
+  dns:            cloudflare-dns
+  cms:            sanity
+  email_tx:       resend
+  analytics:      posthog
+  error_tracking: sentry
+  logging:        axiom
+  spam_guard:     cloudflare-turnstile
+  cookie_consent: cookiebot
+
+search_optional:  meilisearch   # activate when > 50 posts
+
+forbidden:
+  - clerk
+  - stripe
+  - neon-postgres
+  - inngest
+  - knock
+  - twilio
+
+automation_surface:
+  outbound: disabled
+
+support_stack_tier: basic
+
+support_tools:
+  - betterstack-uptime
+  - simplebackups
+  - snyk
+  - google-search-console

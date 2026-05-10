@@ -1,0 +1,95 @@
+template: standard_saas
+description: >
+  Default template for a B2B/B2C SaaS app with auth, subscriptions, transactional
+  emails, dashboard, and analytics. No heavy editorial content.
+
+best_for:
+  - subscription_products
+  - internal_tools_with_paid_tiers
+  - vertical_saas_with_dashboard
+
+frontend:
+  framework: nextjs
+  router: app_router
+  language: typescript
+  styling: tailwindcss
+  ui_kit: shadcn_ui
+  state_management: react_server_components_plus_zustand_for_client_state
+  data_fetching: server_components_plus_fetch_with_revalidate
+  forms: react_hook_form_plus_zod
+  required_routes:
+    - /
+    - /pricing
+    - /sign-in
+    - /sign-up
+    - /dashboard
+    - /dashboard/billing
+    - /dashboard/settings
+    - /api/webhooks/stripe
+    - /api/webhooks/clerk
+    - /api/webhooks/resend
+
+backend:
+  runtime: nextjs_route_handlers
+  service_layer: src/server/services
+  repository_layer: src/server/repositories
+  validation: zod
+  background_jobs: nextjs_route_handlers_invoked_by_external_scheduler_or_queue
+
+integrations:
+  auth: clerk
+  payments: stripe
+  emails: resend
+  analytics: posthog
+  database: postgres
+
+deployment:
+  platform: vercel
+  database_host: managed_postgres
+  studio_host: not_applicable
+  env_management: vercel_environments
+  ci_cd: vercel_git_integration_plus_github_actions_for_db_migrations
+
+required_env_vars:
+  - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+  - CLERK_SECRET_KEY
+  - CLERK_WEBHOOK_SIGNING_SECRET
+  - STRIPE_SECRET_KEY
+  - STRIPE_PUBLISHABLE_KEY
+  - STRIPE_WEBHOOK_SECRET
+  - RESEND_API_KEY
+  - RESEND_FROM_ADDRESS
+  - NEXT_PUBLIC_POSTHOG_KEY
+  - NEXT_PUBLIC_POSTHOG_HOST
+  - DATABASE_URL
+  - DIRECT_URL
+
+folder_structure:
+  - src/app/(marketing)/page.tsx
+  - src/app/(marketing)/pricing/page.tsx
+  - src/app/(auth)/sign-in/[[...sign-in]]/page.tsx
+  - src/app/(auth)/sign-up/[[...sign-up]]/page.tsx
+  - src/app/(app)/dashboard/page.tsx
+  - src/app/(app)/dashboard/billing/page.tsx
+  - src/app/(app)/dashboard/settings/page.tsx
+  - src/app/api/webhooks/stripe/route.ts
+  - src/app/api/webhooks/clerk/route.ts
+  - src/app/api/webhooks/resend/route.ts
+  - src/app/api/billing/checkout/route.ts
+  - src/app/api/billing/portal/route.ts
+  - src/server/services/billing.ts
+  - src/server/services/email.ts
+  - src/server/services/analytics.ts
+  - src/server/repositories/users.ts
+  - src/server/repositories/subscriptions.ts
+  - src/server/repositories/email-logs.ts
+  - src/server/db/client.ts
+  - src/lib/clerk.ts
+  - src/lib/stripe.ts
+  - src/lib/resend.ts
+  - src/lib/posthog.ts
+  - prisma/schema.prisma
+  - emails/welcome.tsx
+  - emails/payment-receipt.tsx
+  - emails/payment-failed.tsx
+  - middleware.ts

@@ -1,0 +1,49 @@
+{
+  "$fixture": "brief-ecommerce",
+  "expected_artifacts": [
+    "brief.json",
+    "brief.md",
+    "integrations.json",
+    "frontend-plan.json",
+    "backend-plan.json",
+    "devops.json",
+    "testing.json",
+    "security.json",
+    "performance.json",
+    "plan.json",
+    "decisions.json",
+    "validation_report.json"
+  ],
+  "expected_brief_shape": {
+    "project": {
+      "archetype": "ecommerce",
+      "industry": { "class": "consumer_brand" },
+      "tier_band": "standard"
+    },
+    "brand": {
+      "visual_archetype": "knowledge/frontend-rules/visual-archetypes/bold-consumer.md",
+      "palette_seed": "#7A4630"
+    },
+    "features_min": [
+      "marketing_pages",
+      "product_catalog",
+      "cart_and_checkout",
+      "payments",
+      "transactional_emails",
+      "analytics",
+      "seo"
+    ],
+    "integrations_min": {
+      "payments": "stripe",
+      "transactional_emails": "resend",
+      "analytics": "posthog"
+    },
+    "lock_status": "DRAFT"
+  },
+  "expected_integrations_preset": "tier-standard-ecommerce",
+  "expected_validation_report": {
+    "status": "passed",
+    "constraints_min_passed": ["C1", "C7", "C10", "C12", "F1", "F4", "AC1", "AC4", "SC1", "I1", "I2"]
+  },
+  "expected_block_response": null
+}

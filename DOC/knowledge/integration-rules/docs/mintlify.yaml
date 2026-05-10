@@ -1,0 +1,10 @@
+﻿integration: mintlify
+category: docs
+role: knowledge_base
+tier: advanced
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

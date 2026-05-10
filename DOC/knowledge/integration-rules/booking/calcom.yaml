@@ -1,0 +1,65 @@
+﻿integration: calcom
+category: booking
+role: booking
+tier: standard
+default_for_archetypes: [saas_app, marketing_site, marketplace]
+alternatives: [tidycal, calendly]
+cost_band: free_tier_available
+compliance_tags: [gdpr]
+boundary: app
+status: active
+description: Open-source scheduling and booking. Embed booking flows in the app or use Cal.com hosted pages. Syncs bookings to the local database via webhooks.
+
+required_env_vars:
+  - CAL_API_KEY               # server-only; from Cal.com dashboard
+  - CAL_WEBHOOK_SECRET        # server-only; for verifying incoming webhooks
+
+optional_env_vars:
+  - NEXT_PUBLIC_CAL_EMBED_NAMESPACE  # client; namespace for Cal Atoms or embed script
+
+packages:
+  - "@calcom/atoms"           # optional; for embedded booking UI
+
+required_skills:
+  - booking-availability-sync-pattern
+  - webhook-signature-verification
+  - idempotency-key-pattern
+
+webhooks:
+  booking_events:
+    endpoint: /api/webhooks/calcom
+    events: [booking_created, booking_rescheduled, booking_cancelled, booking_paid, booking_no_show_updated]
+    verification: x-cal-signature-256 header (HMAC-SHA256)
+
+required_components:
+  backend:
+    - Webhook handler (/api/webhooks/calcom) verifying x-cal-signature-256
+    - bookingService.upsert(calBookingId, data) function
+  database:
+    - bookings table (see booking-availability-sync-pattern.md for schema)
+  frontend:
+    - Booking embed component (Cal Atoms or iframe embed)
+    - User's appointment list page reading from local bookings table
+
+setup_steps:
+  - Create Cal.com account (or self-host)
+  - Create event types in Cal.com dashboard
+  - Generate API key, add to env
+  - Set up webhook in Cal.com dashboard pointing to /api/webhooks/calcom
+  - Copy webhook secret, add to env as CAL_WEBHOOK_SECRET
+  - Embed booking widget in app pages
+
+constraints:
+  - MUST verify x-cal-signature-256 before processing any webhook event
+  - MUST use idempotency-key-pattern (Cal booking ID as key)
+  - MUST sync all booking mutations to local DB (do not query Cal API in real time)
+  - Calendar availability MUST be managed in Cal.com dashboard, not in app code
+
+common_failures:
+  - Webhook secret mismatch on signature verification (trim whitespace)
+  - Missing booking_rescheduled handler causes stale appointment list
+
+emits_outbound_events: [appointment.booked, appointment.rescheduled, appointment.canceled]
+ingests_inbound_events: [booking_created, booking_rescheduled, booking_cancelled]
+
+runbook: docs/runbooks/calcom.md

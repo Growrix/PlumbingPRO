@@ -1,0 +1,10 @@
+﻿integration: paddle
+category: payments
+role: payments
+tier: standard
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

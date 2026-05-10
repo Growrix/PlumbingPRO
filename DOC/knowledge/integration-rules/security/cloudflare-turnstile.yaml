@@ -1,0 +1,62 @@
+﻿integration: cloudflare-turnstile
+category: security
+role: spam_guard
+tier: basic
+default_for_archetypes: [saas_app, ecommerce, marketing_site, landing_page, marketplace]
+alternatives: [hcaptcha, recaptcha-v3]
+cost_band: free
+compliance_tags: [gdpr]
+boundary: app
+status: active
+description: Privacy-friendly CAPTCHA replacement. Protects public forms (sign-up, contact, lead capture, booking) from bot submissions without user friction.
+
+required_env_vars:
+  - NEXT_PUBLIC_TURNSTILE_SITE_KEY  # client; from Cloudflare dashboard
+  - TURNSTILE_SECRET_KEY            # server-only; from Cloudflare dashboard
+
+packages:
+  - react-turnstile                 # or use the vanilla JS embed
+
+required_skills:
+  - form-spam-guard-pattern
+
+webhooks: none
+
+required_components:
+  frontend:
+    - <Turnstile> widget rendered inside every protected form
+    - Token captured in form state on challenge completion
+    - Token submitted as form field (turnstileToken)
+  backend:
+    - verifyTurnstile(token) server function calling Cloudflare siteverify API
+    - Every protected route handler calls verifyTurnstile before processing
+
+protected_forms:
+  - Sign-up form
+  - Contact/lead capture form
+  - Booking request form
+  - Password reset form
+  - Any form with server-side side effects
+
+setup_steps:
+  - Log in to Cloudflare dashboard → Turnstile
+  - Create a new Turnstile widget; copy Site Key and Secret Key
+  - Add NEXT_PUBLIC_TURNSTILE_SITE_KEY and TURNSTILE_SECRET_KEY to env
+  - Render <Turnstile> widget in forms (set sitekey, onSuccess callback)
+  - Add server-side verification to every protected form handler
+
+constraints:
+  - Verification MUST be server-side — client-only verification is bypassed trivially
+  - Token is one-time use — MUST NOT reuse across form submissions
+  - Secret key MUST be server-only env var (not NEXT_PUBLIC_)
+  - MUST NOT block form render if Turnstile JS fails to load (graceful degradation)
+
+common_failures:
+  - Using NEXT_PUBLIC_ for the secret key (leaks secret)
+  - Verifying on client only (easily bypassed)
+  - Not rendering the widget before form submission (token missing)
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+runbook: docs/runbooks/cloudflare-turnstile.md

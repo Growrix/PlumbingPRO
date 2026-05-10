@@ -1,0 +1,9 @@
+﻿integration: instatus
+category: status
+role: status_page
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

@@ -1,0 +1,48 @@
+{
+  "$fixture": "brief-saas-collaborative",
+  "purpose": "Tests collaborative SaaS path: multi-tenant context, realtime updates, presence, activity feed, and in-app notifications.",
+  "expected_outcome": "pass",
+  "expected_block_stage": null,
+  "input": {
+    "user_request": "Build a collaborative B2B SaaS with multi-tenant workspaces, activity feed, real-time updates, in-app notifications, comments, and onboarding tours.",
+    "client_brief": {
+      "brand_name": "Workmesh",
+      "brand_voice": "modern",
+      "logo_url": null,
+      "color_seed": "#0EA5E9",
+      "target_locale": "en-US",
+      "target_regions": ["US", "EU"],
+      "deadline": null,
+      "budget_band": "high"
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "postgres",
+      "no_auth": false,
+      "no_payments": false
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "saas_app",
+    "industry_class": "b2b",
+    "visual_archetype": "knowledge/frontend-rules/visual-archetypes/saas-minimal.md",
+    "tier_band": "advanced"
+  },
+  "expected_features": [
+    "auth",
+    "payments",
+    "realtime_updates",
+    "collaborative_presence",
+    "collaborative_editing",
+    "notifications",
+    "dashboard"
+  ],
+  "expected_integrations_min": {
+    "auth": "clerk",
+    "realtime_events": "pusher",
+    "collaboration_presence": "liveblocks",
+    "notifications": "knock"
+  },
+  "expected_min_assumptions": 2,
+  "expected_open_questions_min": 0
+}

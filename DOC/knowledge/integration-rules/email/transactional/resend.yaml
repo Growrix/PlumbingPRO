@@ -1,0 +1,70 @@
+integration: resend
+category: email
+role: email_transactional
+tier: basic
+default_for_archetypes:
+  - marketing_site
+  - saas_app
+  - ecommerce
+  - marketplace
+alternatives:
+  - postmark
+  - sendgrid
+cost_band: free
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: resend
+server_packages:
+  - resend
+  - react-email
+dev_packages:
+  - "@react-email/components"
+  - "@react-email/render"
+
+use_cases:
+  - transactional_emails
+  - form_submission_confirmations
+  - password_reset
+  - booking_confirmations
+  - invoice_notifications
+  - react_email_templates
+
+required_components:
+  backend:
+    - resend_client_singleton
+    - email_template_components
+    - email_service_helper
+  frontend: []
+
+env_vars:
+  - RESEND_API_KEY
+  - RESEND_FROM_EMAIL
+
+webhooks: {}
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_resend_account
+  - verify_sending_domain_in_resend_dashboard
+  - install_resend_and_react_email_packages
+  - create_resend_client_singleton
+  - build_email_templates_as_react_components
+  - implement_email_service_helper
+  - add_env_vars
+
+constraints:
+  - sending_domain_must_be_verified_before_go_live
+  - from_email_must_match_verified_domain
+  - api_key_must_never_be_exposed_to_client
+
+required_skills: []
+
+common_failures:
+  - domain_not_verified_causes_delivery_failures
+  - react_email_template_not_rendering_in_production
+
+runbook: docs/runbooks/integrations/resend.md

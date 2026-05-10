@@ -1,0 +1,72 @@
+integration: posthog
+category: analytics
+role: analytics
+tier: basic
+default_for_archetypes:
+  - marketing_site
+  - saas_app
+  - ecommerce
+  - content_site
+  - landing_page
+alternatives:
+  - plausible
+  - vercel-analytics
+cost_band: free
+compliance_tags:
+  - gdpr-ready
+  - cookieless-mode-available
+boundary: app
+
+package_name: posthog-js
+client_packages:
+  - posthog-js
+server_packages:
+  - posthog-node
+
+use_cases:
+  - page_views
+  - custom_events
+  - funnels
+  - session_replay
+  - feature_flags
+  - a_b_testing
+  - product_analytics
+
+required_components:
+  frontend:
+    - posthog_provider_at_root
+    - page_view_tracking
+    - custom_event_tracking_helpers
+  backend:
+    - server_side_event_capture_optional
+
+env_vars:
+  - NEXT_PUBLIC_POSTHOG_KEY
+  - NEXT_PUBLIC_POSTHOG_HOST
+
+webhooks: {}
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_posthog_account
+  - install_posthog_js
+  - wrap_root_layout_with_posthog_provider
+  - configure_cookieless_mode_if_gdpr_required
+  - implement_pageview_tracking_on_route_change
+  - add_identify_call_after_auth
+
+constraints:
+  - cookieless_mode_must_be_enabled_for_eu_sites
+  - user_identify_must_not_leak_pii_beyond_user_id
+
+required_skills:
+  - feature-flag-evaluation-pattern
+  - reviews-aggregation-pattern
+
+common_failures:
+  - provider_missing_causing_hook_errors
+  - events_not_fired_because_ad_blocker_blocking_cdn
+
+runbook: docs/runbooks/integrations/posthog.md

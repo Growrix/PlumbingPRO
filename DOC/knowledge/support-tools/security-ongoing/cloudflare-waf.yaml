@@ -1,0 +1,9 @@
+﻿integration: cloudflare-waf
+category: security-ongoing
+role: waf
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

@@ -1,0 +1,73 @@
+﻿integration: documenso
+category: signing
+role: document_signing
+tier: advanced
+default_for_archetypes: [saas_app, marketplace]
+alternatives: [docusign, hellosign, signnow]
+cost_band: free_self_hosted_or_paid_cloud
+compliance_tags: [gdpr, esign, eidas]
+boundary: app
+status: active
+description: Open-source e-signature platform. Used for client agreements, NDAs, contractor onboarding, and any legally binding document signing flow. Self-hosted or Documenso Cloud.
+
+required_env_vars:
+	- DOCUMENSO_API_KEY       # server-only; from Documenso dashboard
+	- DOCUMENSO_API_URL       # server-only; base URL of Documenso instance (cloud or self-hosted)
+	- DOCUMENSO_WEBHOOK_SECRET  # server-only; for verifying webhook payloads
+
+packages: []  # Integration via REST API; no official npm SDK (use fetch or axios)
+
+required_skills:
+	- webhook-signature-verification
+
+webhooks:
+	document_events:
+		endpoint: /api/webhooks/documenso
+		events: [document.completed, document.declined, document.expired, document.sent]
+		verification: signature in request body or header (check Documenso docs for version)
+
+document_lifecycle:
+	- App creates document via POST /api/v1/documents (upload PDF template)
+	- App adds signers (name, email, role: signer/approver)
+	- App sends document for signing (POST /api/v1/documents/{id}/send)
+	- Signer receives email with signing link
+	- Signer completes signing on Documenso hosted page
+	- Documenso sends webhook: document.completed
+	- App downloads signed PDF and stores in file storage (uploadthing / S3)
+	- App records signing event in audit log
+
+required_components:
+	backend:
+		- documensoService.createDocument(pdfBuffer, signers[]) function
+		- documensoService.sendForSigning(documentId) function
+		- documensoService.downloadSignedPdf(documentId) function
+		- Webhook handler (/api/webhooks/documenso)
+	database:
+		- documents table: id, user_id, documenso_id, title, status, signed_at, signed_pdf_url, created_at
+	storage:
+		- Signed PDFs stored in uploadthing/S3 after download from Documenso
+
+setup_steps:
+	- Create Documenso account (app.documenso.com or self-host)
+	- Generate API key from Settings → API Tokens
+	- Add DOCUMENSO_API_KEY and DOCUMENSO_API_URL to env
+	- Configure webhook in Documenso Settings → Webhooks pointing to /api/webhooks/documenso
+	- Add webhook secret to DOCUMENSO_WEBHOOK_SECRET
+	- Create document templates in Documenso for recurring document types
+
+constraints:
+	- MUST verify webhook signature before processing any document event
+	- Signed PDFs MUST be stored in permanent storage after download (Documenso retention varies by plan)
+	- MUST record signing events in audit log (see audit-log-write-pattern.md)
+	- MUST send signed PDF to the signer via email after completion
+	- Document signing MUST comply with ESIGN Act (US) and eIDAS (EU) requirements
+
+common_failures:
+	- Not downloading and storing signed PDF causes data loss if Documenso purges
+	- Sending for signing before all signers are added causes incomplete document
+	- Missing webhook handling leaves document status as 'sent' indefinitely
+
+emits_outbound_events: [document.signed]
+ingests_inbound_events: [document.completed, document.declined, document.expired]
+
+runbook: docs/runbooks/documenso.md

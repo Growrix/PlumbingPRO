@@ -1,0 +1,10 @@
+﻿integration: workos-sso
+category: enterprise
+role: sso_saml
+tier: advanced
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

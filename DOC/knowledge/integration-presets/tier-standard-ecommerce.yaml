@@ -1,0 +1,56 @@
+preset: tier-standard-ecommerce
+applies_to:
+  archetype: ecommerce
+  tier_band: standard
+description: eCommerce store with product catalog, payments, auth, file uploads, search, and shipping-ready backend.
+
+integrations:
+  hosting:        vercel
+  dns:            cloudflare-dns
+  auth:           clerk
+  payments:       stripe
+  tax:            stripe-tax
+  database:       neon-postgres
+  orm:            prisma
+  cms:            sanity
+  file_storage:   uploadthing
+  background_jobs: inngest
+  cache:          upstash
+  search:         meilisearch
+  email_tx:       resend
+  email_marketing: loops
+  notifications:  knock
+  analytics:      posthog
+  error_tracking: sentry
+  logging:        axiom
+  status_page:    betterstack-status
+  uptime:         betterstack-uptime
+  spam_guard:     cloudflare-turnstile
+  cookie_consent: cookiebot
+
+forbidden: []
+
+optional:
+  - maps: mapbox           # activate for local delivery / store locator
+  - sms: twilio            # activate for order SMS notifications
+
+automation_surface:
+  outbound: enabled
+  default_runner: n8n
+  events_base:
+    - order.paid
+    - order.refunded
+    - user.created
+
+support_stack_tier: standard
+
+support_tools:
+  - betterstack-uptime
+  - betterstack-status
+  - simplebackups
+  - snyk
+  - gitguardian
+  - google-search-console
+  - screaming-frog
+  - better-stack-oncall
+  - crisp

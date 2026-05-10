@@ -1,0 +1,76 @@
+preset: tier-advanced-saas
+applies_to:
+  archetype: saas_app
+  tier_band: advanced
+description: Mature multi-tenant SaaS with enterprise auth, advanced analytics, CRM, compliance, and full automation surface.
+
+integrations:
+  hosting:        vercel
+  dns:            cloudflare-dns
+  auth:           clerk
+  sso_saml:       workos
+  payments:       stripe
+  tax:            stripe-tax
+  database:       neon-postgres
+  orm:            prisma
+  file_storage:   uploadthing
+  background_jobs: inngest
+  cache:          upstash
+  search:         meilisearch
+  email_tx:       resend
+  email_marketing: loops
+  notifications:  knock
+  sms:            twilio
+  analytics:      posthog
+  session_replay: posthog
+  feature_flags:  posthog
+  error_tracking: sentry
+  logging:        axiom
+  synthetic_monitoring: checkly
+  status_page:    betterstack-status
+  uptime:         betterstack-uptime
+  crm_sales:      hubspot
+  knowledge_base: mintlify
+  voc_roadmap:    canny
+  onboarding_tours: userflow
+  compliance_automation: vanta
+  spam_guard:     cloudflare-turnstile
+  cookie_consent: cookiebot
+
+forbidden: []
+
+optional:
+  - booking: calcom
+  - document_signing: documenso
+  - rbac_service: permit-io
+
+automation_surface:
+  outbound: enabled
+  default_runner: n8n
+  zapier_export: optional
+  events_base:
+    - lead.created
+    - user.created
+    - subscription.created
+    - subscription.canceled
+    - subscription.updated
+    - appointment.booked
+    - order.paid
+
+support_stack_tier: advanced
+
+support_tools:
+  - betterstack-uptime
+  - checkly
+  - betterstack-status
+  - simplebackups
+  - snaplet
+  - snyk
+  - socket
+  - gitguardian
+  - cloudflare-waf
+  - ahrefs
+  - google-search-console
+  - screaming-frog
+  - pagerduty
+  - crisp

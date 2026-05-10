@@ -1,0 +1,52 @@
+integration: workos-audit-logs
+category: auth
+role: audit_logs
+tier: advanced
+default_for_archetypes: [saas_app, marketplace]
+alternatives: [native-audit-table]
+cost_band: medium
+compliance_tags: [soc2, hipaa, gdpr]
+boundary: app
+status: active
+description: WorkOS Audit Logs integration for enterprise-grade append-only audit trails and SIEM export.
+
+required_env_vars:
+  - WORKOS_API_KEY
+  - WORKOS_CLIENT_ID
+  - WORKOS_AUDIT_ORG_ID
+
+packages:
+  - "@workos-inc/node"
+
+required_skills:
+  - audit-log-write-pattern
+
+webhooks: none
+
+required_components:
+  backend:
+    - audit logger adapter that writes to WorkOS and local fallback table
+    - middleware to capture actor, action, target, metadata for privileged operations
+  database:
+    - optional local audit_logs mirror table for query and backup
+
+setup_steps:
+  - Create WorkOS account and enable Audit Logs
+  - Create API key and set WORKOS_API_KEY
+  - Configure organization mapping and set WORKOS_AUDIT_ORG_ID
+  - Add audit logging middleware to admin and billing routes
+  - Verify export in WorkOS dashboard for representative events
+
+constraints:
+  - MUST be append-only
+  - MUST capture actor identity for all privileged actions
+  - MUST retain logs per compliance policy
+
+common_failures:
+  - Missing org mapping causes dropped events
+  - Privileged routes bypassing middleware create audit gaps
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+runbook: docs/runbooks/workos-audit-logs.md

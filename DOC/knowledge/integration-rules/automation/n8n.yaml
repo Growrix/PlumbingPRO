@@ -1,0 +1,63 @@
+﻿integration: n8n
+category: automation
+role: outbound_automation
+tier: standard
+default_for_archetypes: [saas_app, ecommerce, marketplace]
+alternatives: [zapier, make]
+cost_band: free_self_hosted_or_paid_cloud
+compliance_tags: [gdpr]
+boundary: app
+status: active
+description: Open-source workflow automation. Receives outbound events from the app (via signed webhooks) and routes them to CRM, marketing, Slack, and other external services. Self-hosted or n8n Cloud.
+
+required_env_vars:
+	- N8N_WEBHOOK_URL           # server-only; base URL of n8n instance for webhook triggers
+	- OUTBOUND_WEBHOOK_SECRET   # server-only; HMAC signing secret for outbound payloads
+
+packages: []                  # No npm package; communication is via HTTPS webhooks
+
+required_skills:
+	- outbound-webhook-signing-pattern
+	- embedded-integration-marketplace-pattern
+
+webhooks:
+	outbound_to_n8n:
+		direction: app to n8n
+		method: POST
+		signing: X-Signature-256 HMAC-SHA256
+		payload_format: outbound-event-taxonomy envelope (type, version, id, timestamp, data)
+	inbound_from_n8n:
+		endpoint: /api/webhooks/n8n (optional)
+		events: [app-triggered workflows]
+		verification: shared secret Bearer token
+
+outbound_event_routing:
+	- event: lead.created        routes to CRM lead creation workflow
+	- event: subscription.created routes to CRM deal won, email sequence start
+	- event: subscription.canceled routes to churn notification, retention sequence
+	- event: user.created        routes to welcome Slack notification
+
+setup_steps:
+	- Deploy n8n (cloud.n8n.io or self-hosted on Railway/Render)
+	- Create n8n workflows for each outbound event type
+	- Copy the n8n webhook URL for each workflow into app env
+	- Set OUTBOUND_WEBHOOK_SECRET to a 32-byte random secret
+	- Configure n8n workflows to verify X-Signature-256 header
+	- Test delivery with a staging webhook trigger
+
+constraints:
+	- MUST sign every outbound payload with HMAC-SHA256 (see outbound-webhook-signing.md)
+	- MUST validate recipient URL against SSRF blocklist before dispatch
+	- MUST implement exponential backoff retry (see automation-rules.md AR6)
+	- MUST log every delivery attempt in outbound_webhook_deliveries table
+	- n8n instance MUST have authentication enabled if self-hosted
+
+common_failures:
+	- n8n webhook URL not reachable from production (firewall/NAT issues)
+	- Signature mismatch due to extra whitespace in body serialization
+	- n8n workflow not activated (draft mode silently drops events)
+
+emits_outbound_events: [lead.created, subscription.created, subscription.canceled, user.created, order.paid]
+ingests_inbound_events: []
+
+runbook: docs/runbooks/n8n.md

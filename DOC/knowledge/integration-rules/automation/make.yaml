@@ -1,0 +1,10 @@
+﻿integration: make
+category: automation
+role: internal_automation
+tier: automation
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

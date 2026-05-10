@@ -1,0 +1,42 @@
+preset: tier-basic-marketing-site
+applies_to:
+  archetype: marketing_site
+  tier_band: basic
+description: Minimum viable stack for a local-service or small-business marketing site. No auth, no database, no payments. Static + CMS only.
+
+integrations:
+  hosting:        vercel
+  dns:            cloudflare-dns
+  email_tx:       resend
+  analytics:      posthog
+  error_tracking: sentry
+  logging:        axiom
+  spam_guard:     cloudflare-turnstile
+  cookie_consent: cookiebot
+
+cms_optional:     sanity        # activate only when content > static
+
+forbidden:
+  - clerk
+  - stripe
+  - neon-postgres
+  - inngest
+  - upstash
+  - meilisearch
+  - knock
+  - twilio
+
+automation_surface:
+  outbound: disabled
+
+support_stack_tier: basic
+
+support_tools:
+  - betterstack-uptime
+  - simplebackups
+  - snyk
+  - google-search-console
+
+plan_json_notes:
+  - "No auth, no database, no background jobs."
+  - "CMS is conditional on content volume (activate if > 3 editable pages)."

@@ -1,0 +1,51 @@
+{
+  "$fixture": "brief-marketing-quality-depth",
+  "purpose": "Ensure marketing-site planning output includes enforceable frontend depth and content-key quality signals, not route-only coverage.",
+  "expected_outcome": "pass",
+  "expected_block_stage": null,
+  "input": {
+    "user_request": "build a premium local-services marketing website with trust-first conversion and content-managed pages",
+    "client_brief": {
+      "brand_name": null,
+      "brand_voice": "trustworthy",
+      "logo_url": null,
+      "color_seed": null,
+      "target_locale": "en-AU",
+      "target_regions": ["NSW", "VIC"],
+      "deadline": null,
+      "budget_band": null
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "none",
+      "no_auth": true,
+      "no_payments": true
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "marketing_site",
+    "industry_class": "local_services",
+    "tier_band": "basic"
+  },
+  "expected_quality_contract": {
+    "frontend_constraints_required": ["F2", "F5", "F7"],
+    "validation_schema_required_blocks": [
+      "pre_planning",
+      "pre_build",
+      "pre_deployment",
+      "constraints",
+      "frontend",
+      "accessibility",
+      "security_constraints",
+      "performance_constraints",
+      "data_constraints",
+      "testing_constraints",
+      "integration_constraints",
+      "anti_hallucination",
+      "ownership",
+      "drift",
+      "status"
+    ],
+    "content_library_mode": "keyed-not-summary"
+  }
+}

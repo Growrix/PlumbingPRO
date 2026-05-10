@@ -1,0 +1,44 @@
+{
+  "$fixture": "brief-marketing-site-plumber",
+  "expected_artifacts": [
+    "brief.json",
+    "brief.md",
+    "integrations.json",
+    "frontend-plan.json",
+    "backend-plan.json",
+    "devops.json",
+    "testing.json",
+    "security.json",
+    "performance.json",
+    "plan.json",
+    "decisions.json",
+    "validation_report.json"
+  ],
+  "expected_brief_shape": {
+    "project": {
+      "archetype": "marketing_site",
+      "industry": { "class": "local_services" },
+      "tier_band": "basic"
+    },
+    "brand": {
+      "visual_archetype": "knowledge/frontend-rules/visual-archetypes/local-business-trust.md"
+    },
+    "features_min": [
+      "marketing_pages",
+      "forms",
+      "analytics",
+      "seo"
+    ],
+    "integrations_min_keys": ["cms", "analytics", "transactional_emails"],
+    "constraints": {
+      "no_auth": true,
+      "no_payments": true
+    },
+    "lock_status": "DRAFT"
+  },
+  "expected_validation_report": {
+    "status": "passed",
+    "constraints_min_passed": ["C1", "C2", "C3", "F1", "F2", "F4", "AC1", "AC4", "I1", "I2"]
+  },
+  "expected_block_response": null
+}

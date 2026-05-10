@@ -1,0 +1,9 @@
+﻿integration: wise
+category: agency-finance
+role: international_payments
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

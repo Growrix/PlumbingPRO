@@ -1,0 +1,66 @@
+﻿integration: mapbox
+category: maps
+role: maps
+tier: standard
+default_for_archetypes: [ecommerce, marketing_site, marketplace]
+alternatives: [google-maps, maptiler]
+cost_band: free_tier_available
+compliance_tags: [gdpr]
+boundary: app
+status: active
+description: Interactive maps, geocoding, and directions. Used for store locators, delivery area visualization, property maps, and route planning.
+
+required_env_vars:
+  - NEXT_PUBLIC_MAPBOX_TOKEN  # client; public token from Mapbox account
+  - MAPBOX_SECRET_TOKEN       # server-only; for server-side geocoding API calls
+
+packages:
+  - mapbox-gl                 # core map renderer
+  - react-map-gl              # React wrapper for mapbox-gl
+  - \"@mapbox/mapbox-sdk\"    # Node.js SDK for server-side API calls
+
+required_skills: []
+
+webhooks: none
+
+required_components:
+  frontend:
+    - <Map> component (react-map-gl) for interactive map display
+    - GeocoderInput component for address search with autocomplete
+    - LocationMarker component for pins/markers
+  backend:
+    - geocode(address) server function using Mapbox Geocoding API
+    - reverseGeocode(lat, lng) server function
+  database:
+    - locations table with POINT geometry or (lat, lng) float columns
+
+map_use_cases:
+  - Store locator: render markers from locations table
+  - Delivery zone: render polygon from GeoJSON
+  - Route planning: Directions API for estimated delivery time
+  - Address autocomplete: Mapbox Search / Geocoding API
+
+setup_steps:
+  - Create Mapbox account at mapbox.com
+  - Generate a public token (scoped to URL restrictions) for NEXT_PUBLIC_MAPBOX_TOKEN
+  - Generate a secret token for server-side geocoding
+  - Add tokens to env
+  - Install mapbox-gl + react-map-gl
+  - Import mapbox-gl/dist/mapbox-gl.css in global CSS
+
+constraints:
+  - Public token MUST be URL-restricted in Mapbox dashboard (prevent token abuse)
+  - Secret token MUST be server-only (NEXT_PUBLIC_ prefix forbidden for secret token)
+  - MUST NOT call Mapbox geocoding API on every keystroke — debounce and use Mapbox Search Autocomplete
+  - MUST comply with Mapbox attribution requirements (show 'Mapbox' logo on map)
+  - Must not enable satellite/aerial imagery for addresses without explicit plan
+
+common_failures:
+  - CSS not imported causes blank map container
+  - Public token not URL-restricted leads to abuse
+  - Calling geocoding API per keystroke exhausts free tier quota
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+runbook: docs/runbooks/mapbox.md

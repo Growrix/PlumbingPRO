@@ -1,0 +1,29 @@
+name: agentic-audit-gate
+
+on:
+  pull_request:
+    branches: ["main", "Agents"]
+  push:
+    branches: ["main", "Agents"]
+  workflow_dispatch:
+
+jobs:
+  full-audit:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run full agentic audit gate
+        shell: pwsh
+        run: |
+          ./DOC/validation/checklists/full-audit-runner.ps1 -CiMode
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agentic-audit-reports
+          path: DOC/output/runs/*/reports/*
+          if-no-files-found: warn

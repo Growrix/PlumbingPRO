@@ -1,0 +1,75 @@
+integration: openai
+category: ai
+role: ai_llm
+tier: standard
+default_for_archetypes:
+  - saas_app
+  - dashboard_tool
+alternatives:
+  - anthropic
+  - google-gemini
+cost_band: mid
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: openai
+server_packages:
+  - openai
+  - ai
+
+use_cases:
+  - chat_completions
+  - streaming_responses
+  - tool_calling
+  - structured_outputs
+  - text_embeddings
+  - content_moderation
+  - image_generation
+
+required_components:
+  backend:
+    - openai_client_singleton
+    - chat_api_route_with_streaming
+    - tool_definitions
+    - moderation_precheck
+
+env_vars:
+  - OPENAI_API_KEY
+  - OPENAI_MODEL
+
+webhooks: {}
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_openai_account
+  - generate_api_key
+  - install_openai_and_vercel_ai_sdk
+  - implement_streaming_chat_route
+  - add_moderation_precheck_for_user_content
+  - implement_rate_limiting_per_user
+  - add_cost_tracking_per_request
+
+constraints:
+  - api_key_must_never_be_exposed_to_client
+  - user_input_must_be_moderated_before_completion
+  - streaming_must_handle_abort_signals
+  - cost_must_be_tracked_per_user_to_prevent_abuse
+
+required_skills:
+  - streaming-llm-response-pattern
+  - ai-moderation-precheck-pattern
+  - ai-cost-tracking-pattern
+  - ai-citation-pattern
+  - ai-regenerate-feedback-pattern
+  - ai-streaming-with-tool-use-pattern
+  - ai-cost-meter-pattern
+
+common_failures:
+  - api_key_exposed_in_client_bundle
+  - rate_limit_hit_with_no_per_user_limiting
+  - no_abort_handling_causes_runaway_completions
+
+runbook: docs/runbooks/integrations/openai.md

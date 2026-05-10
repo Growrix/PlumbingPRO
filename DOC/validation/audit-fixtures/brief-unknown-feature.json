@@ -1,0 +1,45 @@
+{
+  "$fixture": "brief-unknown-feature",
+  "purpose": "Negative test: a feature name that is not in feature-integration-map.json must BLOCK with MISSING_KNOWLEDGE.",
+  "expected_outcome": "block",
+  "expected_block_stage": "master_planner.EXTRACT_FEATURES OR integration_planner",
+  "expected_block_code": "MISSING_KNOWLEDGE",
+  "input": {
+    "user_request": "Build a SaaS app with auth, payments, and biometric_login.",
+    "client_brief": {
+      "brand_name": "Acme",
+      "brand_voice": "modern",
+      "logo_url": null,
+      "color_seed": null,
+      "target_locale": "en-US",
+      "target_regions": ["US"],
+      "deadline": null,
+      "budget_band": "mid"
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "postgres",
+      "no_auth": false,
+      "no_payments": false
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "saas_app",
+    "tier_band": "standard"
+  },
+  "expected_features": ["auth", "payments", "biometric_login"],
+  "expected_block_detail": {
+    "missing_feature": "biometric_login",
+    "remediation": "Add an entry for `biometric_login` to knowledge/feature-maps/feature-integration-map.json with a primary integration that has a YAML rule, OR remove the feature from the brief."
+  },
+  "verification": {
+    "must_emit_block_response_with": {
+      "status": "BLOCK",
+      "reason": "MISSING_KNOWLEDGE",
+      "details": {
+        "missing": "biometric_login"
+      }
+    },
+    "must_not_emit": ["plan.json (LOCKED)"]
+  }
+}

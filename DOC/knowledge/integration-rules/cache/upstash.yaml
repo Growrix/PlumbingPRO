@@ -1,0 +1,66 @@
+integration: upstash
+category: cache
+role: cache_and_rate_limit
+tier: standard
+default_for_archetypes:
+  - saas_app
+  - ecommerce
+  - marketplace
+  - api_service
+alternatives:
+  - redis-cloud
+cost_band: free
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: "@upstash/redis"
+server_packages:
+  - "@upstash/redis"
+  - "@upstash/ratelimit"
+
+use_cases:
+  - serverless_redis_kv
+  - rate_limiting_per_ip_or_user
+  - session_caching
+  - search_result_caching
+  - queue_like_data_structures
+  - leaderboards
+
+required_components:
+  backend:
+    - upstash_redis_client_singleton
+    - rate_limiter_middleware_or_helper
+    - cache_layer_helpers
+
+env_vars:
+  - UPSTASH_REDIS_REST_URL
+  - UPSTASH_REDIS_REST_TOKEN
+
+webhooks: {}
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_upstash_account
+  - create_redis_database
+  - install_packages
+  - create_redis_client_singleton
+  - implement_rate_limit_helper_using_ratelimit_package
+  - add_rate_limit_to_api_routes
+  - add_env_vars
+
+constraints:
+  - rest_url_and_token_must_never_be_exposed_to_client
+  - rate_limit_identifiers_must_not_contain_unvalidated_user_input
+
+required_skills:
+  - rate-limit-with-upstash-pattern
+  - cache-invalidation-on-write-pattern
+
+common_failures:
+  - env_vars_missing_in_edge_runtime
+  - rate_limit_key_collision_across_routes
+
+runbook: docs/runbooks/integrations/upstash.md

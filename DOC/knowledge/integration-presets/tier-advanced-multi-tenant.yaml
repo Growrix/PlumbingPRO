@@ -1,0 +1,85 @@
+preset: tier-advanced-multi-tenant
+applies_to:
+  archetype: saas_app
+  tier_band: advanced
+  flags: [multi_tenant, b2b, enterprise]
+description: B2B multi-tenant SaaS with per-org SSO, fine-grained RBAC, tenant isolation, audit logs, compliance, and embedded integration marketplace.
+
+integrations:
+  hosting:        vercel
+  dns:            cloudflare-dns
+  auth:           clerk
+  sso_saml:       workos
+  rbac_service:   permit-io
+  payments:       stripe
+  tax:            stripe-tax
+  database:       neon-postgres
+  orm:            prisma
+  file_storage:   uploadthing
+  background_jobs: inngest
+  cache:          upstash
+  search:         meilisearch
+  email_tx:       resend
+  email_marketing: loops
+  notifications:  knock
+  sms:            twilio
+  analytics:      posthog
+  error_tracking: sentry
+  logging:        axiom
+  audit_logs:     workos-audit-logs
+  synthetic_monitoring: checkly
+  status_page:    betterstack-status
+  uptime:         betterstack-uptime
+  crm_sales:      hubspot
+  compliance_automation: vanta
+  embedded_integrations: paragon
+  spam_guard:     cloudflare-turnstile
+  cookie_consent: cookiebot
+
+forbidden: []
+
+optional:
+  - knowledge_base: mintlify
+  - sms: twilio
+  - onboarding_tours: userflow
+
+required_skills:
+  - sso-saml-handshake-pattern
+  - rbac-policy-evaluation-pattern
+  - audit-log-write-pattern
+  - per-tenant-tokens-pattern
+  - embedded-integration-marketplace-pattern
+  - data-export-endpoint-pattern
+  - data-delete-endpoint-pattern
+  - soft-delete-on-user-deleted-pattern
+
+automation_surface:
+  outbound: enabled
+  per_tenant: true
+  default_runner: n8n
+  zapier_export: required
+  events_base:
+    - lead.created
+    - user.created
+    - user.deleted
+    - subscription.created
+    - subscription.canceled
+    - subscription.updated
+
+support_stack_tier: advanced
+
+support_tools:
+  - betterstack-uptime
+  - checkly
+  - betterstack-status
+  - simplebackups
+  - snaplet
+  - snyk
+  - socket
+  - gitguardian
+  - cloudflare-waf
+  - ahrefs
+  - google-search-console
+  - screaming-frog
+  - pagerduty
+  - crisp

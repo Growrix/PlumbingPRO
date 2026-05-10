@@ -1,0 +1,37 @@
+{
+  "$fixture": "brief-malformed",
+  "purpose": "Negative test: empty user_request must BLOCK at intake. Confirms anti-hallucination guard fires.",
+  "expected_outcome": "block",
+  "expected_block_stage": "intake_strategist",
+  "expected_block_code": "EMPTY_REQUEST",
+  "input": {
+    "user_request": "",
+    "client_brief": {
+      "brand_name": null,
+      "brand_voice": null,
+      "logo_url": null,
+      "color_seed": null,
+      "target_locale": null,
+      "target_regions": [],
+      "deadline": null,
+      "budget_band": null
+    },
+    "constraints": {
+      "deployment_platform": null,
+      "database": null,
+      "no_auth": false,
+      "no_payments": false
+    }
+  },
+  "expected_classifications": null,
+  "expected_features": [],
+  "expected_preset": null,
+  "expected_assumptions": [],
+  "verification": {
+    "must_emit_block_response_with": {
+      "status": "BLOCK",
+      "reason": "EMPTY_REQUEST"
+    },
+    "must_not_emit": ["brief.json", "brief.md"]
+  }
+}

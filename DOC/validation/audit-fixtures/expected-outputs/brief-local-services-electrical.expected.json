@@ -1,0 +1,42 @@
+{
+  "$fixture": "brief-local-services-electrical",
+  "expected_artifacts": [
+    "brief.json",
+    "brief.md",
+    "integrations.json",
+    "frontend-plan.json",
+    "backend-plan.json",
+    "devops.json",
+    "testing.json",
+    "security.json",
+    "performance.json",
+    "plan.json",
+    "decisions.json",
+    "validation_report.json"
+  ],
+  "expected_validation_report": {
+    "status": "passed",
+    "constraints_min_passed": [
+      "F2",
+      "Q2",
+      "Q3",
+      "CC1",
+      "CC2",
+      "CC3",
+      "CC5",
+      "CC6",
+      "AC1",
+      "AC4",
+      "I1"
+    ]
+  },
+  "expected_frontend_quality": {
+    "required_home_content_categories_present": true,
+    "minimum_home_section_density": 8,
+    "minimum_card_content_type_coverage": 4,
+    "footer_attribution_from_brief": true,
+    "component_coverage_complete": true,
+    "required_slot_coverage_complete": true
+  },
+  "expected_block_response": null
+}

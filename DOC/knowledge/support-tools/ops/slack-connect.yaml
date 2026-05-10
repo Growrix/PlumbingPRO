@@ -1,0 +1,9 @@
+﻿integration: slack-connect
+category: ops
+role: client_comms
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

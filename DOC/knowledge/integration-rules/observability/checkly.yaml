@@ -1,0 +1,10 @@
+﻿integration: checkly
+category: observability
+role: synthetic_monitoring
+tier: advanced
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

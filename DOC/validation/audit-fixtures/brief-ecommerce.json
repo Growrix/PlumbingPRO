@@ -1,0 +1,50 @@
+{
+  "$fixture": "brief-ecommerce",
+  "purpose": "Tests the ecommerce/DTC path: products, cart, checkout, brand-led visual archetype.",
+  "expected_outcome": "pass",
+  "expected_block_stage": null,
+  "input": {
+    "user_request": "Online store for a premium home goods brand. We sell products, take orders, ship globally. Need accounts optional, guest checkout, reviews, and a small editorial blog.",
+    "client_brief": {
+      "brand_name": "Hearth & Hand",
+      "brand_voice": null,
+      "logo_url": null,
+      "color_seed": "#7A4630",
+      "target_locale": "en-US",
+      "target_regions": ["US", "UK", "EU"],
+      "deadline": null,
+      "budget_band": "mid"
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "postgres",
+      "no_auth": false,
+      "no_payments": false
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "ecommerce",
+    "industry_class": "consumer_brand",
+    "visual_archetype": "knowledge/frontend-rules/visual-archetypes/bold-consumer.md",
+    "tier_band": "standard"
+  },
+  "expected_features": [
+    "marketing_pages",
+    "product_catalog",
+    "cart_and_checkout",
+    "payments",
+    "transactional_emails",
+    "analytics",
+    "seo",
+    "blog"
+  ],
+  "expected_integrations_min": {
+    "payments": "stripe",
+    "transactional_emails": "resend",
+    "analytics": "posthog",
+    "blog": "sanity"
+  },
+  "expected_preset": "tier-standard-ecommerce",
+  "expected_min_assumptions": 2,
+  "expected_open_questions_min": 1
+}

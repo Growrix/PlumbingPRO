@@ -1,0 +1,59 @@
+integration: sendgrid
+category: email
+role: email_transactional
+tier: basic
+default_for_archetypes: []
+alternatives:
+  - resend
+  - postmark
+cost_band: low
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: "@sendgrid/mail"
+server_packages:
+  - "@sendgrid/mail"
+
+use_cases:
+  - transactional_emails
+  - form_submission_confirmations
+  - password_reset
+  - booking_confirmations
+  - invoice_notifications
+
+required_components:
+  backend:
+    - sendgrid_client_singleton
+    - email_service_helper
+  frontend: []
+
+env_vars:
+  - SENDGRID_API_KEY
+  - SENDGRID_FROM_EMAIL
+
+webhooks: {}
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_sendgrid_account
+  - verify_sender_identity_or_domain
+  - install_sendgrid_sdk
+  - implement_sendgrid_client_singleton
+  - implement_email_service_helper
+  - add_env_vars
+
+constraints:
+  - sender_identity_or_domain_must_be_verified_before_production
+  - api_key_must_never_be_exposed_to_client
+  - from_email_must_match_verified_sender
+
+required_skills: []
+
+common_failures:
+  - sender_identity_not_verified_causes_rejected_messages
+  - using_marketing_api_for_transactional_paths_causes_template_mismatch
+
+runbook: docs/runbooks/integrations/sendgrid.md

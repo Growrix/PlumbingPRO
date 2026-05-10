@@ -1,0 +1,10 @@
+﻿integration: turbopuffer
+category: ai
+role: vector_db
+tier: advanced
+default_for_archetypes: []
+alternatives: []
+cost_band: low
+compliance_tags: []
+boundary: app
+status: stub

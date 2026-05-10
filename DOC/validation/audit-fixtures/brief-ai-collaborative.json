@@ -1,0 +1,46 @@
+{
+  "$fixture": "brief-ai-collaborative",
+  "purpose": "Tests AI collaborative path: streaming with citations, tool-use UX, cost meter, and collaborative comments.",
+  "expected_outcome": "pass",
+  "expected_block_stage": null,
+  "input": {
+    "user_request": "Build an AI copilot SaaS with streaming responses, citations, tool calls, collaborative comments, and per-tenant cost controls.",
+    "client_brief": {
+      "brand_name": "Synapse Desk",
+      "brand_voice": "ai-native",
+      "logo_url": null,
+      "color_seed": "#14B8A6",
+      "target_locale": "en-US",
+      "target_regions": ["US", "EU"],
+      "deadline": null,
+      "budget_band": "high"
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "postgres",
+      "no_auth": false,
+      "no_payments": false
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "saas_app",
+    "industry_class": "ai_first",
+    "visual_archetype": "knowledge/frontend-rules/visual-archetypes/ai-product.md",
+    "tier_band": "advanced"
+  },
+  "expected_features": [
+    "auth",
+    "payments",
+    "ai_chat",
+    "ai_retrieval",
+    "realtime_updates",
+    "collaborative_editing"
+  ],
+  "expected_integrations_min": {
+    "ai_llm": "openai",
+    "collaboration_presence": "liveblocks",
+    "realtime_events": "pusher"
+  },
+  "expected_min_assumptions": 2,
+  "expected_open_questions_min": 0
+}

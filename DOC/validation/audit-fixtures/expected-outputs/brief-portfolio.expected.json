@@ -1,0 +1,51 @@
+{
+  "$fixture": "brief-portfolio",
+  "expected_artifacts": [
+    "brief.json",
+    "brief.md",
+    "integrations.json",
+    "frontend-plan.json",
+    "backend-plan.json",
+    "devops.json",
+    "testing.json",
+    "security.json",
+    "performance.json",
+    "plan.json",
+    "decisions.json",
+    "validation_report.json"
+  ],
+  "expected_brief_shape": {
+    "project": {
+      "archetype": "portfolio_site",
+      "industry": { "class": "creator_or_portfolio" },
+      "tier_band": "basic"
+    },
+    "brand": {
+      "voice": "editorial",
+      "visual_archetype": "knowledge/frontend-rules/visual-archetypes/portfolio-craft.md"
+    },
+    "features_min": [
+      "marketing_pages",
+      "case_studies",
+      "forms",
+      "analytics",
+      "seo"
+    ],
+    "integrations_min": {
+      "cms": "sanity",
+      "transactional_emails": "resend",
+      "analytics": "posthog"
+    },
+    "constraints": {
+      "no_auth": true,
+      "no_payments": true
+    },
+    "lock_status": "DRAFT"
+  },
+  "expected_integrations_preset": "tier-basic-marketing-site",
+  "expected_validation_report": {
+    "status": "passed",
+    "constraints_min_passed": ["C1", "F1", "F2", "AC1", "AC4", "I1", "I2"]
+  },
+  "expected_block_response": null
+}

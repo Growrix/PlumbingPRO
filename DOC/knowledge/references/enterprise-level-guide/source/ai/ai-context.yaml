@@ -1,0 +1,405 @@
+version: 1
+project:
+  name: Growrix OS
+  type: role-based SaaS platform
+  summary: >-
+    Client-first, demo-driven web and app delivery platform with public, client,
+    admin, and developer surfaces, transparent queueing, priority payments,
+    maintenance support, shop, demo wall, reviews, notifications, and AI assistance.
+  status: documentation-first
+  canonical_docs_root: DOC/Universal/Enterprise Level Guide/
+  canonical_ai_entrypoint: DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+  canonical_human_index: DOC/Universal/Enterprise Level Guide/README.md
+
+prompt_contract:
+  always_reference_first:
+    - DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+  recommended_prompt_fields:
+    - module
+    - affected_roles
+    - requested_change
+    - business_rule
+    - docs_to_follow
+    - api_or_schema_impact
+    - testing_expectation
+  minimum_instruction: >-
+    Start by reading DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml, then follow the listed read_path for the target module before coding.
+
+tech_stack:
+  frontend:
+    - Next.js
+    - React
+    - Tailwind CSS
+  backend:
+    - Supabase Auth
+    - Supabase Postgres
+    - Supabase Realtime
+    - Supabase Storage
+    - Supabase Edge Functions
+  payments:
+    - Stripe
+  ai:
+    - OpenAI-compatible API
+  hosting:
+    - Vercel
+    - Supabase Cloud
+  mobile_phase:
+    - React Native
+    - Expo
+
+core_invariants:
+  - Hidden routes are not security boundaries; enforce authorization in middleware, APIs, and database policies.
+  - Admin assigns work; developers never self-assign.
+  - Queue integrity is critical; priority handling, ETA updates, cancellations, and assignments must be deterministic and auditable.
+  - Delivered demos and projects are private by default; public exposure requires explicit approval.
+  - Maintenance coverage begins automatically on delivery and lasts one year unless plan logic supersedes it.
+  - UI must stay thin; server logic is authoritative for business state.
+  - Contracts for routes, data, states, permissions, and integrations must be documented before cross-surface implementation starts.
+  - Entitlements, quotas, rollout controls, and abuse protections are operational controls, not frontend-only concerns.
+  - Do not introduce undocumented lifecycle states, routes, or cross-domain coupling.
+
+quality_enforcement:
+  protocol_doc: DOC/Universal/Enterprise Level Guide/quality/enterprise-testing-and-quality-enforcement-v2.md
+  completion_rule: all-required-quality-checks-must-pass
+  mandatory_pipeline:
+    - static_validation
+    - unit_testing
+    - integration_testing
+    - ui_testing
+    - responsive_mobile_testing
+    - end_to_end_testing
+    - seo_validation
+    - accessibility_validation
+    - performance_validation
+    - security_validation
+    - regression_testing
+  failure_protocol:
+    - stop
+    - debug
+    - fix
+    - rerun_full_pipeline
+
+surfaces:
+  public:
+    routes:
+      - /
+      - /demo-wall
+      - /shop
+      - /reviews
+    roles:
+      - visitor
+      - client
+    capabilities:
+      - marketing
+      - demo request intake
+      - priority upsell
+      - demo wall browsing
+      - shop browsing
+      - reviews
+      - Ask Growi public assistant
+  client:
+    routes:
+      - /dashboard
+    roles:
+      - client
+    capabilities:
+      - queue status
+      - project timeline
+      - chat
+      - uploads
+      - approvals
+      - downloads
+      - maintenance requests
+  admin:
+    routes:
+      - /growrix-admin
+    roles:
+      - admin
+    capabilities:
+      - queue and batch control
+      - assignments
+      - shop and gallery management
+      - maintenance oversight
+      - reviews and notifications oversight
+  developer:
+    routes:
+      - /growrix-team
+    roles:
+      - developer
+    capabilities:
+      - assigned work execution
+      - deliverable uploads
+      - backups
+      - status updates
+      - client chat
+
+modules:
+  authentication_and_roles:
+    docs:
+      - DOC/Universal/Enterprise Level Guide/product/product-requirements.md
+      - DOC/Universal/Enterprise Level Guide/backend/auth-authorization-and-rls.md
+      - DOC/Universal/Enterprise Level Guide/operations/security-and-operations.md
+    tables:
+      - users
+    key_rules:
+      - No public admin or developer signup.
+      - Role checks must exist in middleware, APIs, and RLS.
+  demo_requests_and_queue:
+    docs:
+      - DOC/Universal/Enterprise Level Guide/product/product-requirements.md
+      - DOC/Universal/Enterprise Level Guide/architecture/module-boundaries.md
+      - DOC/Universal/Enterprise Level Guide/data/data-model.md
+      - DOC/Universal/Enterprise Level Guide/backend/queue-payments-and-integrations.md
+      - DOC/Universal/Enterprise Level Guide/api/api-design.md
+    tables:
+      - batches
+      - demo_requests
+      - projects
+    key_rules:
+      - Batch capacity is enforced server-side.
+      - Queue order and ETA are server-owned.
+      - Assignment creates or updates project records transactionally.
+  priority_payments:
+    docs:
+      - DOC/Universal/Enterprise Level Guide/backend/queue-payments-and-integrations.md
+      - DOC/Universal/Enterprise Level Guide/api/api-design.md
+      - DOC/Universal/Enterprise Level Guide/operations/security-and-operations.md
+    tables:
+      - payments
+      - demo_requests
+    key_rules:
+      - Priority status is granted only after verified payment success.
+      - Webhooks must be idempotent and signature-verified.
+  client_delivery_workspace:
+    docs:
+      - DOC/Universal/Enterprise Level Guide/frontend/frontend-architecture.md
+      - DOC/Universal/Enterprise Level Guide/frontend/realtime-chat-and-client-resilience.md
+      - DOC/Universal/Enterprise Level Guide/backend/file-delivery-and-storage.md
+      - DOC/Universal/Enterprise Level Guide/data/data-model.md
+    tables:
+      - projects
+      - messages
+      - project_backups
+      - maintenance_requests
+    key_rules:
+      - Chat is scoped to assigned work.
+      - File access is permission-checked server-side.
+  public_proof_and_shop:
+    docs:
+      - DOC/Universal/Enterprise Level Guide/product/product-requirements.md
+      - DOC/Universal/Enterprise Level Guide/backend/file-delivery-and-storage.md
+      - DOC/Universal/Enterprise Level Guide/frontend/ui-ux-standards.md
+      - DOC/Universal/Enterprise Level Guide/data/data-model.md
+    tables:
+      - demo_gallery
+      - shop_items
+      - shop_orders
+      - google_reviews
+    key_rules:
+      - Public visibility is explicit and approved.
+      - Marketplace credibility does not imply third-party file delivery.
+  maintenance_and_support:
+    docs:
+      - DOC/Universal/Enterprise Level Guide/product/product-requirements.md
+      - DOC/Universal/Enterprise Level Guide/data/data-model.md
+      - DOC/Universal/Enterprise Level Guide/api/api-design.md
+    tables:
+      - maintenance_contracts
+      - maintenance_requests
+    key_rules:
+      - Maintenance starts automatically on delivery.
+      - Expired coverage requires plan logic or denial handling.
+  notifications_and_ai:
+    docs:
+      - DOC/Universal/Enterprise Level Guide/ai/ai-collaboration-playbook.md
+      - DOC/Universal/Enterprise Level Guide/api/api-design.md
+      - DOC/Universal/Enterprise Level Guide/backend/backend-observability-and-reliability.md
+    tables:
+      - notifications
+      - ai_chat_logs
+    key_rules:
+      - AI is read-only against operational state unless explicitly documented otherwise.
+      - Notification failures must not corrupt business state.
+
+status_models:
+  demo_request_status:
+    - requested
+    - assigned
+    - in_progress
+    - delivered
+    - converted
+    - cancelled
+  project_status:
+    - assigned
+    - in_progress
+    - delivered
+    - maintenance
+    - closed
+  payment_status:
+    - pending
+    - paid
+    - failed
+    - refunded
+  maintenance_request_status:
+    - open
+    - in_progress
+    - resolved
+
+frontend_rules:
+  source_docs:
+    - DOC/Universal/Enterprise Level Guide/frontend/frontend-rules-and-design-system.md
+    - DOC/Universal/Enterprise Level Guide/frontend/frontend-architecture.md
+    - DOC/Universal/Enterprise Level Guide/frontend/ui-ux-standards.md
+    - DOC/Universal/Enterprise Level Guide/frontend/component-and-styling-standards.md
+    - DOC/Universal/Enterprise Level Guide/frontend/data-fetching-and-state.md
+  mandatory:
+    - No hardcoded design values; use centralized design system tokens and primitives.
+    - Keep role surfaces separated.
+    - Keep server state authoritative.
+    - Explicitly handle loading, empty, error, reconnect, and permission states.
+    - Use accessible and responsive UI patterns.
+
+backend_rules:
+  source_docs:
+    - DOC/Universal/Enterprise Level Guide/backend/backend-architecture.md
+    - DOC/Universal/Enterprise Level Guide/backend/service-design-and-domain-rules.md
+    - DOC/Universal/Enterprise Level Guide/backend/auth-authorization-and-rls.md
+    - DOC/Universal/Enterprise Level Guide/backend/queue-payments-and-integrations.md
+    - DOC/Universal/Enterprise Level Guide/backend/file-delivery-and-storage.md
+    - DOC/Universal/Enterprise Level Guide/operations/platform-governance-and-controls.md
+  mandatory:
+    - Put business rules in domain services.
+    - Validate all inputs and status transitions.
+    - Fail closed on authorization.
+    - Keep payment, queue, and assignment flows idempotent where needed.
+    - Protect private files through scoped delivery patterns.
+    - Treat entitlements, quotas, and rollout controls as server-authoritative policies.
+
+read_paths:
+  system_contract_change:
+    - DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+    - DOC/Universal/Enterprise Level Guide/architecture/contract-first-delivery.md
+    - DOC/Universal/Enterprise Level Guide/product/product-requirements.md
+    - DOC/Universal/Enterprise Level Guide/architecture/system-architecture.md
+    - DOC/Universal/Enterprise Level Guide/data/data-model.md
+    - DOC/Universal/Enterprise Level Guide/api/api-design.md
+  frontend_change:
+    - DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+    - DOC/Universal/Enterprise Level Guide/architecture/contract-first-delivery.md
+    - DOC/Universal/Enterprise Level Guide/frontend/frontend-rules-and-design-system.md
+    - DOC/Universal/Enterprise Level Guide/frontend/frontend-architecture.md
+    - DOC/Universal/Enterprise Level Guide/frontend/ui-ux-standards.md
+    - DOC/Universal/Enterprise Level Guide/frontend/component-and-styling-standards.md
+    - DOC/Universal/Enterprise Level Guide/frontend/data-fetching-and-state.md
+  backend_change:
+    - DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+    - DOC/Universal/Enterprise Level Guide/architecture/contract-first-delivery.md
+    - DOC/Universal/Enterprise Level Guide/backend/backend-architecture.md
+    - DOC/Universal/Enterprise Level Guide/backend/service-design-and-domain-rules.md
+    - DOC/Universal/Enterprise Level Guide/backend/auth-authorization-and-rls.md
+    - DOC/Universal/Enterprise Level Guide/api/api-design.md
+    - DOC/Universal/Enterprise Level Guide/data/data-model.md
+  queue_or_payment_change:
+    - DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+    - DOC/Universal/Enterprise Level Guide/backend/queue-payments-and-integrations.md
+    - DOC/Universal/Enterprise Level Guide/data/data-model.md
+    - DOC/Universal/Enterprise Level Guide/api/api-design.md
+    - DOC/Universal/Enterprise Level Guide/operations/security-and-operations.md
+  schema_or_rls_change:
+    - DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+    - DOC/Universal/Enterprise Level Guide/data/data-model.md
+    - DOC/Universal/Enterprise Level Guide/backend/auth-authorization-and-rls.md
+    - DOC/Universal/Enterprise Level Guide/operations/security-and-operations.md
+  ai_or_notification_change:
+    - DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+    - DOC/Universal/Enterprise Level Guide/ai/ai-collaboration-playbook.md
+    - DOC/Universal/Enterprise Level Guide/api/api-design.md
+    - DOC/Universal/Enterprise Level Guide/backend/backend-observability-and-reliability.md
+  release_or_ops_change:
+    - DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+    - DOC/Universal/Enterprise Level Guide/quality/enterprise-testing-and-quality-enforcement-v2.md
+    - DOC/Universal/Enterprise Level Guide/quality/qa-and-release-gates.md
+    - DOC/Universal/Enterprise Level Guide/process/deployment-and-environments.md
+    - DOC/Universal/Enterprise Level Guide/process/incident-response.md
+    - DOC/Universal/Enterprise Level Guide/operations/security-and-operations.md
+    - DOC/Universal/Enterprise Level Guide/operations/platform-governance-and-controls.md
+  governance_or_entitlement_change:
+    - DOC/Universal/Enterprise Level Guide/ai/ai-context.yaml
+    - DOC/Universal/Enterprise Level Guide/architecture/contract-first-delivery.md
+    - DOC/Universal/Enterprise Level Guide/operations/platform-governance-and-controls.md
+    - DOC/Universal/Enterprise Level Guide/operations/security-and-operations.md
+    - DOC/Universal/Enterprise Level Guide/api/api-design.md
+    - DOC/Universal/Enterprise Level Guide/data/data-model.md
+
+decision_rules:
+  if_task_mentions:
+    contract:
+      use_read_path: system_contract_change
+    blueprint:
+      use_read_path: system_contract_change
+    schema_contract:
+      use_read_path: system_contract_change
+    frontend:
+      use_read_path: frontend_change
+    ui:
+      use_read_path: frontend_change
+    design_system:
+      use_read_path: frontend_change
+    api:
+      use_read_path: backend_change
+    auth:
+      use_read_path: backend_change
+    queue:
+      use_read_path: queue_or_payment_change
+    payment:
+      use_read_path: queue_or_payment_change
+    stripe:
+      use_read_path: queue_or_payment_change
+    migration:
+      use_read_path: schema_or_rls_change
+    rls:
+      use_read_path: schema_or_rls_change
+    ai:
+      use_read_path: ai_or_notification_change
+    notification:
+      use_read_path: ai_or_notification_change
+    release:
+      use_read_path: release_or_ops_change
+    deployment:
+      use_read_path: release_or_ops_change
+    entitlement:
+      use_read_path: governance_or_entitlement_change
+    quota:
+      use_read_path: governance_or_entitlement_change
+    rate_limit:
+      use_read_path: governance_or_entitlement_change
+    throttle:
+      use_read_path: governance_or_entitlement_change
+    feature_flag:
+      use_read_path: governance_or_entitlement_change
+    kill_switch:
+      use_read_path: governance_or_entitlement_change
+    support:
+      use_read_path: governance_or_entitlement_change
+    billing:
+      use_read_path: governance_or_entitlement_change
+
+ai_output_expectations:
+  when_changing_behavior:
+    - update relevant docs
+    - update tests for critical logic
+    - preserve module boundaries
+    - state assumptions explicitly when requirements are incomplete
+  completion_discipline:
+    - confirm zero-gate pass before declaring done
+    - commit locally with a clear message
+    - never push or merge without explicit instruction
+    - output must include what changed, docs updated, validations run, commit hash, and remaining risks
+  reference_doc: DOC/Universal/Enterprise Level Guide/ai/ai-collaboration-playbook.md
+
+index:
+  docs_index: DOC/Universal/Enterprise Level Guide/README.md
+  workspace_instructions: .github/copilot-instructions.md
+  ai_playbook: DOC/Universal/Enterprise Level Guide/ai/ai-collaboration-playbook.md
+  frontend_design_system_rules: DOC/Universal/Enterprise Level Guide/frontend/frontend-rules-and-design-system.md
+  quality_enforcement_protocol: DOC/Universal/Enterprise Level Guide/quality/enterprise-testing-and-quality-enforcement-v2.md

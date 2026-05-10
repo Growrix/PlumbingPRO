@@ -1,0 +1,57 @@
+{
+  "$fixture": "brief-saas-standard",
+  "purpose": "Tests the standard SaaS path: auth + payments + CMS + analytics + emails. Should select tier-standard-saas preset and enable automation surface.",
+  "expected_outcome": "pass",
+  "expected_block_stage": null,
+  "input": {
+    "user_request": "Build a SaaS for content teams. We need user accounts, paid subscriptions with monthly and annual plans, a built-in blog, transactional emails, and analytics. Aim for premium feel.",
+    "client_brief": {
+      "brand_name": "Acme Content",
+      "brand_voice": "premium",
+      "logo_url": null,
+      "color_seed": "#0F766E",
+      "target_locale": "en-US",
+      "target_regions": ["US", "EU"],
+      "deadline": null,
+      "budget_band": "mid"
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "postgres",
+      "no_auth": false,
+      "no_payments": false
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "saas_app",
+    "industry_class": "b2b",
+    "visual_archetype": "knowledge/frontend-rules/visual-archetypes/editorial-premium.md",
+    "tier_band": "standard"
+  },
+  "expected_features": [
+    "auth",
+    "payments",
+    "subscriptions",
+    "blog",
+    "transactional_emails",
+    "analytics",
+    "dashboard",
+    "marketing_pages",
+    "seo"
+  ],
+  "expected_integrations_min": {
+    "auth": "clerk",
+    "payments": "stripe",
+    "blog": "sanity",
+    "transactional_emails": "resend",
+    "analytics": "posthog",
+    "database": "neon-postgres"
+  },
+  "expected_preset": "tier-standard-saas",
+  "expected_automation_surface": {
+    "outbound_enabled": true,
+    "default_runner": "n8n"
+  },
+  "expected_min_assumptions": 2,
+  "expected_open_questions_min": 0
+}

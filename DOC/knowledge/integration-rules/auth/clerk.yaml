@@ -1,0 +1,123 @@
+integration: clerk
+category: auth
+role: auth
+tier: standard
+default_for_archetypes:
+  - saas_app
+  - ecommerce
+  - marketplace
+  - dashboard_tool
+alternatives:
+  - workos
+  - supabase-auth
+cost_band: mid
+compliance_tags:
+  - gdpr-ready
+  - soc2-friendly
+boundary: app
+
+package_name: "@clerk/nextjs"
+client_packages:
+  - "@clerk/nextjs"
+  - "@clerk/themes"
+server_packages:
+  - "@clerk/nextjs"
+  - "@clerk/backend"
+
+use_cases:
+  - email_password_auth
+  - magic_link_auth
+  - social_oauth
+  - mfa
+  - organizations_and_teams
+  - role_based_access_control
+  - session_management
+  - user_profile_management
+  - webhooks_for_user_lifecycle_events
+
+required_components:
+  frontend:
+    - clerk_provider_at_root
+    - sign_in_route
+    - sign_up_route
+    - user_button_in_app_shell
+    - protected_route_wrapper
+    - organization_switcher_if_orgs_enabled
+  backend:
+    - middleware_for_route_protection
+    - server_helpers_to_read_session
+    - api_route_webhook_handler
+    - service_clerk_client_for_admin_actions
+  database:
+    - table_or_collection: users
+      fields: [id, clerk_user_id, email, full_name, avatar_url, created_at, updated_at]
+    - table_or_collection: organizations
+      fields: [id, clerk_org_id, name, slug, created_at]
+      optional: true
+    - table_or_collection: memberships
+      fields: [id, user_id, organization_id, role, created_at]
+      optional: true
+
+env_vars:
+  - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+  - CLERK_SECRET_KEY
+  - CLERK_WEBHOOK_SIGNING_SECRET
+  - NEXT_PUBLIC_CLERK_SIGN_IN_URL
+  - NEXT_PUBLIC_CLERK_SIGN_UP_URL
+  - NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL
+  - NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL
+
+webhooks:
+  endpoint: /api/webhooks/clerk
+  events:
+    - user.created
+    - user.updated
+    - user.deleted
+    - organization.created
+    - organization.updated
+    - organization.deleted
+    - organizationMembership.created
+    - organizationMembership.updated
+    - organizationMembership.deleted
+    - session.created
+    - session.ended
+
+emits_outbound_events: []
+ingests_inbound_events:
+  - user.created
+  - user.deleted
+
+setup_steps:
+  - create_clerk_application
+  - configure_auth_methods_in_dashboard
+  - install_clerk_packages
+  - wrap_root_layout_with_clerk_provider
+  - add_clerk_middleware_for_route_protection
+  - create_sign_in_and_sign_up_routes_using_clerk_components
+  - implement_server_helpers_to_get_user_and_org_in_route_handlers
+  - configure_webhook_signing_secret_in_dashboard
+  - implement_webhook_handler_with_signature_verification
+  - sync_user_records_to_local_database_on_user_created_event
+  - configure_redirect_urls_after_sign_in_and_sign_up
+
+constraints:
+  - webhook_signature_verification_is_mandatory
+  - clerk_user_id_is_the_source_of_truth_for_identity
+  - local_users_table_is_a_mirror_only_never_source_of_truth
+  - never_store_passwords_locally
+  - organizations_feature_requires_pro_plan_or_higher
+
+required_skills:
+  - webhook-signature-verification
+  - soft-delete-on-user-deleted-pattern
+  - data-delete-endpoint-pattern
+  - data-export-endpoint-pattern
+  - rbac-policy-evaluation-pattern
+  - sso-saml-handshake-pattern
+
+common_failures:
+  - webhook_signing_secret_mismatch_causes_401
+  - user_not_synced_to_db_because_webhook_not_registered
+  - middleware_not_protecting_api_routes_correctly
+
+runbook: docs/runbooks/integrations/clerk.md

@@ -1,0 +1,37 @@
+preset: tier-overlay-realtime
+applies_to:
+  archetype: saas_app_realtime
+  tier_band: advanced
+  flags: [realtime, collaborative]
+description: Overlay preset for realtime collaboration capabilities on top of existing SaaS presets.
+
+integrations:
+  realtime_events: pusher
+  collaboration_presence: liveblocks
+
+forbidden: []
+
+optional:
+  - realtime_events: supabase-realtime
+
+required_skills:
+  - websocket-reconnect-pattern
+  - optimistic-ui-pattern
+  - presence-tracking-pattern
+  - subscription-fanout-pattern
+
+automation_surface:
+  outbound: enabled
+  default_runner: n8n
+  events_base:
+    - entity.status.changed
+    - comment.created
+    - room.joined
+
+support_stack_tier: advanced
+
+support_tools:
+  - betterstack-uptime
+  - checkly
+  - sentry
+  - axiom

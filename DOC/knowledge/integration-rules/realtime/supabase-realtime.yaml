@@ -1,0 +1,70 @@
+integration: supabase-realtime
+category: realtime
+role: realtime_events
+tier: standard
+default_for_archetypes: []
+alternatives:
+  - pusher
+  - liveblocks
+cost_band: low
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: "@supabase/supabase-js"
+client_packages:
+  - "@supabase/supabase-js"
+server_packages:
+  - "@supabase/supabase-js"
+
+use_cases:
+  - postgres_change_subscriptions
+  - realtime_broadcast_channels
+  - presence_for_simple_rooms
+
+required_components:
+  frontend:
+    - supabase_client_singleton
+    - realtime_channel_subscription_hooks
+    - optimistic_update_reconciliation
+  backend:
+    - server_side_publisher_helper
+    - row_level_security_policies_for_realtime
+
+env_vars:
+  - NEXT_PUBLIC_SUPABASE_URL
+  - NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - SUPABASE_SERVICE_ROLE_KEY
+
+webhooks: {}
+
+emits_outbound_events:
+  - row.inserted
+  - row.updated
+  - row.deleted
+ingests_inbound_events: []
+
+setup_steps:
+  - create_supabase_project_or_enable_realtime_on_existing_project
+  - enable_realtime_replication_for_target_tables
+  - configure_row_level_security_for_subscription_safety
+  - install_supabase_js_sdk
+  - build_channel_subscription_layer_with_unsubscribe_cleanup
+
+constraints:
+  - table_replication_must_be_enabled_explicitly_for_each_table
+  - subscriptions_must_be_scoped_by_tenant_or_owner
+  - service_role_key_must_remain_server_only
+  - reconnect_and_backoff_must_be_implemented_for_client_subscriptions
+
+required_skills:
+  - websocket-reconnect-pattern
+  - optimistic-ui-pattern
+  - subscription-fanout-pattern
+
+common_failures:
+  - forgetting_to_enable_realtime_on_tables
+  - leaking_cross_tenant_rows_due_to_missing_rls_filters
+  - orphaned_subscriptions_causing_memory_growth
+
+runbook: docs/runbooks/integrations/supabase-realtime.md

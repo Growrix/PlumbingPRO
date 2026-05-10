@@ -1,0 +1,9 @@
+﻿integration: stripe-billing
+category: agency-finance
+role: retainer_billing
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

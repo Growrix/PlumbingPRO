@@ -1,0 +1,163 @@
+template: api_saas
+description: >
+  Template for SaaS apps that expose a public API as the primary product surface.
+  Includes API key management, per-key rate limiting, usage metering, webhooks,
+  developer portal, and standard SaaS auth/billing pillars.
+
+best_for:
+  - developer_tools
+  - data_api_products
+  - integration_platforms
+  - webhook_delivery_services
+  - public_api_businesses
+
+frontend:
+  framework: nextjs
+  router: app_router
+  language: typescript
+  styling: tailwindcss
+  ui_kit: shadcn_ui
+  state_management: react_server_components_plus_zustand_for_client_state
+  data_fetching: server_components_plus_fetch_with_revalidate
+  forms: react_hook_form_plus_zod
+  required_routes:
+    - /
+    - /pricing
+    - /docs
+    - /docs/[[...slug]]
+    - /sign-in
+    - /sign-up
+    - /dashboard
+    - /dashboard/api-keys
+    - /dashboard/usage
+    - /dashboard/webhooks
+    - /dashboard/billing
+    - /dashboard/settings
+    - /api/v1/[...route]
+    - /api/webhooks/stripe
+    - /api/webhooks/clerk
+    - /api/inngest
+    - /api/health
+
+backend:
+  runtime: nextjs_route_handlers
+  service_layer: src/server/services
+  repository_layer: src/server/repositories
+  validation: zod
+  background_jobs: inngest
+  api_versioning: url_prefix_v1
+
+integrations:
+  auth: clerk
+  payments: stripe
+  emails: resend
+  analytics: posthog
+  database: postgres
+  background_jobs: inngest
+  cache_and_rate_limit: upstash
+  error_tracking: sentry
+  logging: axiom
+  docs_cms: sanity
+
+deployment:
+  platform: vercel
+  database_host: managed_postgres
+  studio_host: sanity_managed_or_vercel_subdomain
+  env_management: vercel_environments
+  ci_cd: vercel_git_integration_plus_github_actions_for_db_migrations
+
+required_env_vars:
+  - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+  - CLERK_SECRET_KEY
+  - CLERK_WEBHOOK_SIGNING_SECRET
+  - STRIPE_SECRET_KEY
+  - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  - STRIPE_WEBHOOK_SECRET
+  - RESEND_API_KEY
+  - RESEND_FROM_ADDRESS
+  - NEXT_PUBLIC_POSTHOG_KEY
+  - NEXT_PUBLIC_POSTHOG_HOST
+  - DATABASE_URL
+  - DIRECT_URL
+  - INNGEST_EVENT_KEY
+  - INNGEST_SIGNING_KEY
+  - UPSTASH_REDIS_REST_URL
+  - UPSTASH_REDIS_REST_TOKEN
+  - NEXT_PUBLIC_SENTRY_DSN
+  - SENTRY_DSN
+  - SENTRY_ORG
+  - SENTRY_PROJECT
+  - SENTRY_AUTH_TOKEN
+  - AXIOM_TOKEN
+  - AXIOM_DATASET
+  - NEXT_PUBLIC_SANITY_PROJECT_ID
+  - NEXT_PUBLIC_SANITY_DATASET
+  - NEXT_PUBLIC_SANITY_API_VERSION
+  - SANITY_API_READ_TOKEN
+
+required_db_tables:
+  - users
+  - organizations
+  - api_keys
+  - api_usage
+  - subscriptions
+  - webhook_endpoints
+  - webhook_deliveries
+  - email_logs
+
+required_components:
+  frontend:
+    - api_key_manager_ui
+    - usage_chart_per_key_and_period
+    - webhook_endpoint_manager_ui
+    - developer_docs_pages_from_sanity
+  backend:
+    - api_key_authentication_middleware
+    - per_key_rate_limit_via_upstash
+    - usage_metering_service
+    - webhook_dispatch_service
+    - api_key_hashing_service
+  background_jobs:
+    - usage_aggregation_cron
+    - webhook_delivery_retry_function
+    - email_dispatch_function
+
+api_key_design:
+  format: "sk_<env>_<random_256bit_hex>"
+  storage: hash_in_db_show_plaintext_once_only
+  scopes: ["read", "write", "admin"]
+  rotation: supported_via_dashboard
+
+folder_structure:
+  - src/app/(marketing)/page.tsx
+  - src/app/(marketing)/pricing/page.tsx
+  - src/app/(marketing)/docs/[[...slug]]/page.tsx
+  - src/app/(dashboard)/dashboard/page.tsx
+  - src/app/(dashboard)/dashboard/api-keys/page.tsx
+  - src/app/(dashboard)/dashboard/usage/page.tsx
+  - src/app/(dashboard)/dashboard/webhooks/page.tsx
+  - src/app/api/v1/[...route]/route.ts
+  - src/app/api/inngest/route.ts
+  - src/app/api/webhooks/stripe/route.ts
+  - src/app/api/webhooks/clerk/route.ts
+  - src/app/api/health/route.ts
+  - src/server/services/api-keys.ts
+  - src/server/services/usage.ts
+  - src/server/services/webhooks.ts
+  - src/lib/upstash.ts
+  - src/inngest/client.ts
+  - src/inngest/functions/webhook-delivery.ts
+  - src/inngest/functions/usage-aggregation.ts
+
+slo_targets:
+  web_vitals_lcp_ms: 2500
+  api_p99_ms: 200
+  db_query_p99_ms: 100
+  uptime_percent: 99.95
+
+constraints:
+  - api_keys_must_be_hashed_in_db_never_stored_plaintext
+  - per_key_rate_limit_mandatory_on_all_v1_routes
+  - webhook_delivery_must_verify_endpoint_ownership
+  - usage_metered_per_api_key_per_billing_period
+  - docs_must_be_served_from_cms_not_mdx_files_for_editor_control

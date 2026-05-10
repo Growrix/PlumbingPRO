@@ -1,0 +1,48 @@
+{
+  "$fixture": "brief-local-services-electrical",
+  "purpose": "Benchmark local-services richness and completeness gates using an electrical-services reference profile without prescribing component names.",
+  "expected_outcome": "pass",
+  "expected_block_stage": null,
+  "input": {
+    "user_request": "build a premium electrical services website with trust-first conversion, deep service content, and strong local proof",
+    "client_brief": {
+      "brand_name": "PowerPro Electrical",
+      "brand_voice": "trustworthy",
+      "logo_url": null,
+      "color_seed": null,
+      "target_locale": "en-US",
+      "target_regions": ["Queensland", "Brisbane Metro"],
+      "deadline": null,
+      "budget_band": "medium"
+    },
+    "constraints": {
+      "deployment_platform": "vercel",
+      "database": "none",
+      "no_auth": true,
+      "no_payments": true
+    }
+  },
+  "expected_classifications": {
+    "project_archetype": "marketing_site",
+    "industry_class": "local_services",
+    "visual_archetype": "knowledge/frontend-rules/visual-archetypes/local-business-trust.md",
+    "tier_band": "basic"
+  },
+  "expected_quality_contract": {
+    "frontend_constraints_required": ["F2", "Q2", "CC1", "CC2", "CC3", "CC5", "CC6"],
+    "required_home_content_categories": [
+      "locality_outcome_statement",
+      "urgency_evidence",
+      "trust_signal_cluster",
+      "capability_map",
+      "customer_voice",
+      "local_proof",
+      "objection_handling",
+      "multi_channel_conversion",
+      "footer_credibility"
+    ],
+    "minimum_home_section_density": 8,
+    "minimum_card_content_type_coverage": 4,
+    "footer_attribution_required": true
+  }
+}

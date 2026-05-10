@@ -1,0 +1,75 @@
+integration: meilisearch
+category: search
+role: search
+tier: standard
+default_for_archetypes:
+  - ecommerce
+  - marketplace
+  - content_site
+  - saas_app
+alternatives:
+  - algolia
+  - typesense
+cost_band: low
+compliance_tags:
+  - gdpr-ready
+  - self-hostable
+boundary: app
+
+package_name: meilisearch
+server_packages:
+  - meilisearch
+client_packages:
+  - "@meilisearch/instant-meilisearch"
+  - react-instantsearch
+
+use_cases:
+  - full_text_search
+  - faceted_search
+  - typo_tolerant_search
+  - product_search
+  - content_search
+  - geosearch
+
+required_components:
+  frontend:
+    - search_input_component
+    - search_results_list
+    - facet_filter_panel
+  backend:
+    - meilisearch_client_singleton
+    - indexing_service
+    - search_api_route
+
+env_vars:
+  - MEILISEARCH_HOST
+  - MEILISEARCH_ADMIN_API_KEY
+  - MEILISEARCH_SEARCH_API_KEY
+
+webhooks: {}
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - provision_meilisearch_instance
+  - install_packages
+  - create_meilisearch_client_singleton
+  - define_indexes_with_filterable_and_sortable_attributes
+  - implement_indexing_pipeline_on_content_create_update_delete
+  - implement_search_route
+  - set_env_vars
+
+constraints:
+  - admin_key_must_never_be_exposed_to_client
+  - search_key_is_safe_for_client_use
+  - index_must_be_resynced_on_schema_change
+
+required_skills:
+  - cache-invalidation-on-write-pattern
+
+common_failures:
+  - index_not_updated_on_content_change
+  - search_key_accidentally_used_for_admin_operations
+
+runbook: docs/runbooks/integrations/meilisearch.md

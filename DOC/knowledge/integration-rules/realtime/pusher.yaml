@@ -1,0 +1,78 @@
+integration: pusher
+category: realtime
+role: realtime_events
+tier: standard
+default_for_archetypes:
+  - saas_app
+  - dashboard_tool
+alternatives:
+  - supabase-realtime
+  - liveblocks
+cost_band: low
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: pusher
+client_packages:
+  - pusher-js
+server_packages:
+  - pusher
+
+use_cases:
+  - live_dashboard_updates
+  - in_app_notifications
+  - typing_indicators
+  - lightweight_collaboration
+
+required_components:
+  frontend:
+    - realtime_provider_client
+    - subscription_hooks_per_channel
+    - optimistic_update_helpers
+  backend:
+    - pusher_server_singleton
+    - auth_endpoint_for_private_channels
+    - publish_event_service
+
+env_vars:
+  - PUSHER_APP_ID
+  - PUSHER_KEY
+  - PUSHER_SECRET
+  - PUSHER_CLUSTER
+  - NEXT_PUBLIC_PUSHER_KEY
+  - NEXT_PUBLIC_PUSHER_CLUSTER
+
+webhooks: {}
+
+emits_outbound_events:
+  - dashboard.metric.updated
+  - notification.created
+  - entity.status.changed
+ingests_inbound_events: []
+
+setup_steps:
+  - create_pusher_app
+  - copy_keys_to_env
+  - install_pusher_server_and_client_packages
+  - create_private_channel_auth_route
+  - implement_publish_service_for_domain_events
+  - subscribe_clients_to_scoped_channels
+
+constraints:
+  - private_or_presence_channels_must_use_server_auth
+  - channel_names_must_include_tenant_scope_when_multi_tenant
+  - publish_payloads_must_exclude_sensitive_data
+  - reconnect_logic_must_handle_network_flaps
+
+required_skills:
+  - websocket-reconnect-pattern
+  - optimistic-ui-pattern
+  - subscription-fanout-pattern
+
+common_failures:
+  - using_public_channels_for_private_data
+  - missing_tenant_scope_in_channel_name_causes_data_leakage
+  - duplicate_event_handling_without_idempotency_guard
+
+runbook: docs/runbooks/integrations/pusher.md

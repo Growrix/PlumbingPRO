@@ -1,0 +1,67 @@
+﻿integration: anthropic
+category: ai
+role: ai_llm_alt
+tier: advanced
+default_for_archetypes: [ai_product]
+alternatives: [openai, google-gemini]
+cost_band: medium
+compliance_tags: [gdpr, soc2]
+boundary: app
+status: active
+description: Anthropic Claude LLM API. Used as primary or alternative LLM for chat, summarization, classification, and document analysis. Integrated via Vercel AI SDK for streaming.
+
+required_env_vars:
+	- ANTHROPIC_API_KEY  # server-only; from console.anthropic.com
+
+packages:
+	- ai                        # Vercel AI SDK (provider-agnostic)
+	- "@ai-sdk/anthropic"       # Anthropic provider for Vercel AI SDK
+
+required_skills:
+	- streaming-llm-response-pattern
+	- ai-cost-tracking-pattern
+	- ai-moderation-precheck-pattern
+	- rate-limit-with-upstash-pattern
+	- retrieval-augmented-generation-pattern
+
+required_components:
+	backend:
+		- Anthropic provider instance (lib/anthropic.ts) using @ai-sdk/anthropic
+		- Streaming chat route (POST /api/chat) returning toDataStreamResponse()
+		- AI usage tracking (onFinish callback → ai_usage table)
+		- Moderation precheck before LLM call (via OpenAI Moderation or custom classifier)
+		- Rate limiter middleware on /api/chat (upstash)
+	database:
+		- ai_usage table (see ai-cost-tracking-pattern.md for schema)
+
+supported_models:
+	- claude-opus-4       # most capable; highest cost
+	- claude-sonnet-4-5   # balanced capability/cost (recommended default)
+	- claude-haiku-3-5    # fastest/cheapest; for high-volume classification
+
+setup_steps:
+	- Create Anthropic account at console.anthropic.com
+	- Generate API key, add ANTHROPIC_API_KEY to env
+	- Install ai + @ai-sdk/anthropic
+	- Create streaming chat route using streamText({ model: anthropic('claude-sonnet-4-5') })
+	- Implement ai_usage table and onFinish tracking
+	- Add rate limiting to /api/chat
+
+constraints:
+	- API key MUST be server-only (never in NEXT_PUBLIC_ env var)
+	- MUST implement moderation precheck before every LLM call
+	- MUST rate-limit per user (not per IP) to prevent quota exhaustion
+	- MUST track token usage per user in ai_usage table
+	- MUST enforce per-user monthly spend cap and return 402 when exceeded
+	- Context window MUST be managed (truncate history to fit within model limit)
+	- MUST handle AbortSignal to cancel upstream API calls when client disconnects
+
+common_failures:
+	- Sending full conversation history without truncation hits context window limit
+	- Not canceling upstream request when client disconnects (wasted token spend)
+	- Missing moderation precheck allows prompt injection
+
+emits_outbound_events: [ai.usage.limit_reached, ai.content.flagged]
+ingests_inbound_events: []
+
+runbook: docs/runbooks/anthropic.md

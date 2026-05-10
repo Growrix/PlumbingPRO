@@ -1,0 +1,9 @@
+﻿integration: linear
+category: ops
+role: issue_tracking
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

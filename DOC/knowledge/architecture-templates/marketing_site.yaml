@@ -1,0 +1,108 @@
+template: marketing_site
+description: >
+  Template for a marketing-first site (local service business) with CMS-backed
+  content and analytics/observability, but no auth, payments, or database.
+
+best_for:
+  - marketing_site
+  - local_business_sites
+  - lead_gen_sites
+  - brochureware_with_cms
+
+frontend:
+  framework: nextjs
+  router: app_router
+  language: typescript
+  styling: tailwindcss
+  ui_kit: shadcn_ui
+  state_management: react_server_components_plus_minimal_client_state
+  data_fetching: server_components_with_groq_against_sanity_cdn
+  forms: client_side_form_state_with_schema_validation
+  required_routes:
+    - /
+    - /services
+    - /services/[slug]
+    - /areas
+    - /areas/[slug]
+    - /reviews
+    - /about
+    - /contact
+    - /quote
+    - /faq
+    - /blog
+    - /privacy
+    - /terms
+    - /404
+    - /api/webhooks/sanity
+    - /api/draft
+    - /api/health
+
+backend:
+  runtime: nextjs_route_handlers
+  service_layer: src/server/services
+  repository_layer: none
+  validation: zod
+  background_jobs: none
+
+integrations:
+  cms: sanity
+  analytics: posthog
+  error_tracking: sentry
+  logging: axiom
+
+deployment:
+  platform: vercel
+  studio_host: sanity_managed_or_vercel_subdomain
+  env_management: vercel_environments
+  ci_cd: vercel_git_integration_plus_github_actions
+
+required_env_vars:
+  - NEXT_PUBLIC_SANITY_PROJECT_ID
+  - NEXT_PUBLIC_SANITY_DATASET
+  - SANITY_API_READ_TOKEN
+  - SANITY_WEBHOOK_SECRET
+  - NEXT_PUBLIC_POSTHOG_KEY
+  - NEXT_PUBLIC_POSTHOG_HOST
+  - NEXT_PUBLIC_SENTRY_DSN
+  - SENTRY_AUTH_TOKEN
+  - SENTRY_ORG
+  - SENTRY_PROJECT
+  - AXIOM_DATASET
+  - AXIOM_TOKEN
+
+folder_structure:
+  - next.config.ts
+  - src/app/(marketing)/page.tsx
+  - src/app/(marketing)/services/page.tsx
+  - src/app/(marketing)/services/[slug]/page.tsx
+  - src/app/(marketing)/areas/page.tsx
+  - src/app/(marketing)/areas/[slug]/page.tsx
+  - src/app/(marketing)/reviews/page.tsx
+  - src/app/(marketing)/about/page.tsx
+  - src/app/(marketing)/contact/page.tsx
+  - src/app/(marketing)/quote/page.tsx
+  - src/app/(marketing)/faq/page.tsx
+  - src/app/(marketing)/blog/page.tsx
+  - src/app/(marketing)/privacy/page.tsx
+  - src/app/(marketing)/terms/page.tsx
+  - src/app/not-found.tsx
+  - src/app/api/webhooks/sanity/route.ts
+  - src/app/api/draft/route.ts
+  - src/app/api/health/route.ts
+  - src/sanity/client.ts
+  - src/sanity/queries/siteSettings.ts
+  - src/sanity/queries/services.ts
+  - src/sanity/queries/areas.ts
+  - src/sanity/queries/reviews.ts
+  - src/sanity/queries/posts.ts
+  - src/lib/posthog.ts
+  - src/lib/sentry.ts
+  - src/lib/axiom.ts
+  - middleware.ts
+  - studio/sanity.config.ts
+  - studio/schemas/siteSettings.ts
+  - studio/schemas/service.ts
+  - studio/schemas/area.ts
+  - studio/schemas/review.ts
+  - studio/schemas/post.ts
+  - studio/schemas/seo.ts

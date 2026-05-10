@@ -1,0 +1,95 @@
+integration: sanity
+category: cms
+role: cms
+tier: basic
+default_for_archetypes:
+  - marketing_site
+  - content_site
+  - saas_app
+  - ecommerce
+alternatives:
+  - contentful
+  - payload
+cost_band: free
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: next-sanity
+server_packages:
+  - next-sanity
+  - "@sanity/client"
+  - "@sanity/image-url"
+dev_packages:
+  - sanity
+
+use_cases:
+  - structured_content
+  - blog_posts
+  - landing_page_content
+  - product_catalog
+  - media_asset_hosting
+  - live_preview_with_draft_mode
+  - incremental_static_regeneration_via_webhooks
+
+required_components:
+  frontend:
+    - sanity_provider_or_client_config
+    - portable_text_renderer
+    - image_component_with_sanity_image_url
+    - draft_mode_toggle_for_editors
+  backend:
+    - sanity_client_singleton
+    - groq_query_helpers
+    - api_route_draft_mode_enable
+    - api_route_webhook_revalidation
+  cms_studio:
+    - sanity_studio_colocated_or_hosted
+    - schema_definitions_per_content_type
+
+env_vars:
+  - NEXT_PUBLIC_SANITY_PROJECT_ID
+  - NEXT_PUBLIC_SANITY_DATASET
+  - SANITY_API_READ_TOKEN
+  - SANITY_WEBHOOK_SECRET
+
+webhooks:
+  endpoint: /api/webhooks/sanity
+  events:
+    - document.publish
+    - document.unpublish
+    - document.delete
+
+emits_outbound_events: []
+ingests_inbound_events:
+  - document.publish
+  - document.unpublish
+
+setup_steps:
+  - create_sanity_project
+  - define_content_schemas
+  - configure_sanity_studio_route_in_nextjs
+  - install_packages
+  - create_sanity_client_singleton
+  - write_groq_queries_for_each_content_type
+  - implement_image_component_using_sanity_image_url
+  - configure_revalidation_webhook_in_sanity_dashboard
+  - implement_webhook_handler_with_secret_verification
+  - set_env_vars_in_vercel
+
+constraints:
+  - content_must_not_be_duplicated_in_database
+  - images_must_route_through_sanity_cdn
+  - draft_mode_must_be_protected_by_secret
+  - queries_must_use_cdn_for_public_content
+
+required_skills:
+  - webhook-signature-verification
+  - cache-invalidation-on-write-pattern
+
+common_failures:
+  - revalidation_webhook_not_called_on_publish
+  - cors_error_when_studio_and_app_on_different_origins
+  - image_width_height_not_passed_causing_layout_shift
+
+runbook: docs/runbooks/integrations/sanity.md

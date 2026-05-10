@@ -1,0 +1,44 @@
+{
+  "$fixture": "brief-marketing-quality-depth",
+  "expected_artifacts": [
+    "brief.json",
+    "brief.md",
+    "integrations.json",
+    "frontend-plan.json",
+    "backend-plan.json",
+    "devops.json",
+    "testing.json",
+    "security.json",
+    "performance.json",
+    "plan.json",
+    "decisions.json",
+    "validation_report.json"
+  ],
+  "expected_validation_report": {
+    "status": "passed",
+    "required_top_level_blocks": [
+      "pre_planning",
+      "pre_build",
+      "pre_deployment",
+      "constraints",
+      "frontend",
+      "accessibility",
+      "security_constraints",
+      "performance_constraints",
+      "data_constraints",
+      "testing_constraints",
+      "integration_constraints",
+      "anti_hallucination",
+      "ownership",
+      "drift",
+      "status"
+    ],
+    "constraints_min_passed": ["C1", "C2", "C3", "F2", "F5", "F7", "AC1", "I1"]
+  },
+  "expected_frontend_quality": {
+    "content_library_mode": "keyed-not-summary",
+    "page_specs_have_section_detail": true,
+    "route_only_parity": false
+  },
+  "expected_block_response": null
+}

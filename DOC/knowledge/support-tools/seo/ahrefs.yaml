@@ -1,0 +1,9 @@
+﻿integration: ahrefs
+category: seo
+role: seo_audit
+boundary: support
+tier_applicability:
+  basic: false
+  standard: false
+  advanced: false
+status: stub

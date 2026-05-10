@@ -1,0 +1,71 @@
+integration: inngest
+category: jobs
+role: background_jobs
+tier: standard
+default_for_archetypes:
+  - saas_app
+  - ecommerce
+  - marketplace
+alternatives:
+  - trigger-dev
+cost_band: free
+compliance_tags:
+  - gdpr-ready
+boundary: app
+
+package_name: inngest
+server_packages:
+  - inngest
+
+use_cases:
+  - background_jobs
+  - scheduled_cron_jobs
+  - step_functions
+  - durable_workflows
+  - delayed_execution
+  - event_fan_out
+  - webhook_processing
+  - email_sequences
+
+required_components:
+  backend:
+    - inngest_client
+    - inngest_functions_directory
+    - api_route_inngest_serve_handler
+
+env_vars:
+  - INNGEST_EVENT_KEY
+  - INNGEST_SIGNING_KEY
+
+webhooks:
+  endpoint: /api/inngest
+  events:
+    - all_registered_inngest_events
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_inngest_account
+  - install_inngest_package
+  - create_inngest_client
+  - define_functions_with_event_triggers
+  - implement_serve_route_at_api_inngest
+  - register_signing_key_in_vercel
+  - test_locally_with_inngest_dev_server
+
+constraints:
+  - serve_route_must_be_publicly_accessible
+  - signing_key_must_be_set_in_production
+  - functions_must_be_idempotent
+
+required_skills:
+  - idempotency-key-pattern
+  - webhook-signature-verification
+
+common_failures:
+  - serve_route_protected_by_auth_middleware
+  - missing_signing_key_in_production
+  - function_not_triggered_because_event_name_typo
+
+runbook: docs/runbooks/integrations/inngest.md

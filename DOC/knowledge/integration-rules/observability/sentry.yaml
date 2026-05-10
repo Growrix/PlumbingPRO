@@ -1,0 +1,76 @@
+integration: sentry
+category: observability
+role: error_tracking
+tier: basic
+default_for_archetypes:
+  - marketing_site
+  - saas_app
+  - ecommerce
+  - marketplace
+  - content_site
+alternatives:
+  - bugsnag
+  - rollbar
+cost_band: free
+compliance_tags:
+  - gdpr-ready
+  - soc2-friendly
+boundary: both
+
+package_name: "@sentry/nextjs"
+server_packages:
+  - "@sentry/nextjs"
+client_packages:
+  - "@sentry/nextjs"
+
+use_cases:
+  - error_tracking
+  - performance_tracing
+  - session_replay_errors
+  - source_map_upload
+  - release_tracking
+  - alert_on_error_spike
+
+required_components:
+  frontend:
+    - sentry_init_in_client_entry
+    - error_boundary_with_sentry_capture
+  backend:
+    - sentry_init_in_server_entry
+    - sentry_nextjs_config
+  devops:
+    - source_map_upload_in_ci
+
+env_vars:
+  - NEXT_PUBLIC_SENTRY_DSN
+  - SENTRY_AUTH_TOKEN
+  - SENTRY_ORG
+  - SENTRY_PROJECT
+
+webhooks: {}
+
+emits_outbound_events: []
+ingests_inbound_events: []
+
+setup_steps:
+  - create_sentry_account_and_project
+  - install_sentry_nextjs
+  - run_sentry_wizard_to_generate_config_files
+  - add_source_map_upload_to_ci
+  - configure_dsn_in_env_vars
+  - add_error_boundary_components
+  - configure_alert_rules_in_sentry_dashboard
+
+constraints:
+  - dsn_is_safe_for_public_use_but_should_not_be_hardcoded
+  - source_maps_must_be_uploaded_and_then_deleted_from_deploy
+  - pii_scrubbing_must_be_configured_before_gdpr_go_live
+
+required_skills: []
+
+common_failures:
+  - source_maps_not_uploaded_so_errors_unreadable
+  - dsn_missing_in_env_so_errors_silently_dropped
+  - pii_in_error_messages_violating_gdpr
+
+runbook: docs/runbooks/integrations/sentry.md

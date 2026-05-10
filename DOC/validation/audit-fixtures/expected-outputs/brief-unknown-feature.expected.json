@@ -1,0 +1,22 @@
+{
+  "$fixture": "brief-unknown-feature",
+  "expected_artifacts": [],
+  "expected_brief_shape_partial": {
+    "project": { "archetype": "saas_app" },
+    "features_min": ["auth", "payments", "biometric_login"]
+  },
+  "expected_block_response": {
+    "status": "BLOCK",
+    "reason": "MISSING_KNOWLEDGE",
+    "stage": "master_planner.EXTRACT_FEATURES OR integration_planner",
+    "details": {
+      "missing": "biometric_login",
+      "remediation": "Add `biometric_login` to feature-integration-map.json with a primary integration that has a YAML rule, OR remove the feature."
+    }
+  },
+  "expected_validation_report": null,
+  "verification": {
+    "must_fail_at": ["master_planner.EXTRACT_FEATURES", "integration_planner"],
+    "must_not_produce": ["plan.json (LOCKED)"]
+  }
+}
